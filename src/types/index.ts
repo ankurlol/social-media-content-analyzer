@@ -12,6 +12,42 @@ export type ToneType =
 
 export type SentimentType = 'Positive' | 'Neutral' | 'Negative';
 
+// Emotion categories for word-level heatmap
+export type EmotionCategory =
+  | 'neutral'
+  | 'analytical'
+  | 'curious'
+  | 'excited'
+  | 'authoritative'
+  | 'positive'
+  | 'negative'
+  | 'urgent';
+
+export interface EmotionWord {
+  word: string;
+  emotion: EmotionCategory;
+  intensity: number; // 0 - 1
+  isSpaceAfter: boolean;
+}
+
+// Style DNA - 6-axis writing fingerprint
+export interface StyleDNAProfile {
+  formality: number;      // 0-100: casual vs formal language
+  emotion: number;        // 0-100: emotional intensity
+  brevity: number;        // 0-100: short punchy vs long elaborate
+  authority: number;      // 0-100: confident/expert tone
+  curiosity: number;      // 0-100: question-heavy / exploratory
+  storytelling: number;   // 0-100: narrative / anecdote-driven
+}
+
+// Word Cloud word with engagement weight
+export interface WordCloudWord {
+  word: string;
+  frequency: number;
+  engagementWeight: number; // 0-100
+  category: 'hook' | 'topic' | 'action' | 'emotion' | 'generic';
+}
+
 export interface ReadabilityMetrics {
   fleschScore: number;
   gradeLevel: string;
@@ -110,6 +146,10 @@ export interface AnalysisResult {
   suggestions: ImprovementSuggestion[];
   variants: ContentVariant[];
   analytics: ProjectedAnalytics;
+  // NEW: Differentiating features
+  emotionMap: EmotionWord[];
+  styleDNA: StyleDNAProfile;
+  wordCloud: WordCloudWord[];
   analyzedAt: string;
 }
 

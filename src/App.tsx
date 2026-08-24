@@ -8,9 +8,13 @@ import { PlatformOptimizer } from './components/PlatformOptimizer';
 import { DeepDiveMetrics } from './components/DeepDiveMetrics';
 import { ImprovementSuggestions } from './components/ImprovementSuggestions';
 import { VariantGenerator } from './components/VariantGenerator';
+import { EmotionHeatmap } from './components/EmotionHeatmap';
+import { StyleDNA } from './components/StyleDNA';
+import { GoldenHourScheduler } from './components/GoldenHourScheduler';
+import { ViralWordCloud } from './components/ViralWordCloud';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { SampleDataModal } from './components/SampleDataModal';
-import { analyzeContent } from './services/analyzerService';
+import { analyzeContentFull } from './services/analyzerService';
 import {
   generateAIEnhancements,
   getStoredAISettings,
@@ -20,9 +24,28 @@ import {
 import type { AnalysisResult, ExtractedDocument, ProcessingState } from './types';
 import { SAMPLE_POSTS, type SamplePostItem } from './utils/samplePosts';
 import confetti from 'canvas-confetti';
-import { PieChart, LayoutGrid, Wand2, Compass, CheckCircle2 } from 'lucide-react';
+import {
+  PieChart,
+  LayoutGrid,
+  Wand2,
+  Compass,
+  CheckCircle2,
+  Flame,
+  Activity,
+  Calendar,
+  Sparkles,
+} from 'lucide-react';
 
-type ActiveTab = 'analytics' | 'platforms' | 'variants' | 'deepdive' | 'suggestions';
+type ActiveTab =
+  | 'analytics'
+  | 'emotion'
+  | 'dna'
+  | 'schedule'
+  | 'wordcloud'
+  | 'platforms'
+  | 'variants'
+  | 'deepdive'
+  | 'suggestions';
 
 export const App: React.FC = () => {
   const [text, setText] = useState<string>(SAMPLE_POSTS[0].text);
@@ -44,7 +67,7 @@ export const App: React.FC = () => {
 
   const debounceTimerRef = useRef<number | null>(null);
 
-  // Perform content analysis
+  // Perform full content analysis
   const runAnalysis = (contentToAnalyze: string = text) => {
     if (!contentToAnalyze.trim()) {
       setAnalysisResult(null);
@@ -53,7 +76,7 @@ export const App: React.FC = () => {
 
     setIsAnalyzing(true);
     try {
-      const result = analyzeContent(contentToAnalyze);
+      const result = analyzeContentFull(contentToAnalyze);
       setAnalysisResult(result);
     } catch (err) {
       console.error('Analysis error:', err);
@@ -62,7 +85,7 @@ export const App: React.FC = () => {
     }
   };
 
-  // Initial analysis on load
+  // Initial analysis on mount
   useEffect(() => {
     runAnalysis(SAMPLE_POSTS[0].text);
   }, []);
@@ -77,7 +100,7 @@ export const App: React.FC = () => {
 
     debounceTimerRef.current = window.setTimeout(() => {
       runAnalysis(newText);
-    }, 350);
+    }, 300);
   };
 
   // Handle document extraction (from PDF or OCR)
@@ -114,6 +137,7 @@ export const App: React.FC = () => {
           particleCount: 50,
           spread: 70,
           origin: { y: 0.7 },
+          colors: ['#6366f1', '#ec4899', '#22d3ee'],
         });
       }
     } catch (err) {
@@ -123,8 +147,20 @@ export const App: React.FC = () => {
     }
   };
 
+  const tabs: { id: ActiveTab; label: string; icon: React.ElementType; color: string; badge?: string | number }[] = [
+    { id: 'analytics', label: 'Analytics Report', icon: PieChart, color: 'text-indigo-400' },
+    { id: 'emotion', label: 'Emotion Heatmap', icon: Flame, color: 'text-pink-400', badge: 'Unique' },
+    { id: 'dna', label: 'Style DNA Radar', icon: Activity, color: 'text-purple-400', badge: 'Unique' },
+    { id: 'schedule', label: 'Golden Hour', icon: Calendar, color: 'text-cyan-400', badge: 'Unique' },
+    { id: 'wordcloud', label: 'Viral Word Cloud', icon: Sparkles, color: 'text-amber-400', badge: 'Unique' },
+    { id: 'platforms', label: 'Platform Simulator', icon: LayoutGrid, color: 'text-sky-400' },
+    { id: 'variants', label: 'A/B Rewrite Variants', icon: Wand2, color: 'text-rose-400', badge: 4 },
+    { id: 'deepdive', label: 'Hook & CTA Metrics', icon: Compass, color: 'text-teal-400' },
+    { id: 'suggestions', label: 'Action Checklist', icon: CheckCircle2, color: 'text-emerald-400', badge: analysisResult?.suggestions.length },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#f8f9fc] text-slate-800 flex flex-col font-sans selection:bg-pink-500 selection:text-white">
+    <div className="min-h-screen bg-[#0a0a0f] text-slate-100 flex flex-col font-sans selection:bg-pink-500 selection:text-white">
       {/* Top Navbar */}
       <Navbar
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
@@ -136,13 +172,18 @@ export const App: React.FC = () => {
       {/* Main Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Social Media Content Analyzer
-            </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Extract text from documents/scans, analyze viral factors, and view projected engagement reports.
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                Social Media Content Intelligence Suite
+              </h1>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-indigo-500/20 to-pink-500/20 border border-indigo-500/30 text-indigo-300">
+                PRO
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Multi-modal document extraction, emotion heatmapping, style radar & algorithmic reach forecasting.
             </p>
           </div>
         </div>
@@ -174,79 +215,67 @@ export const App: React.FC = () => {
             {/* Top Score Summary Strip */}
             <OverviewDashboard result={analysisResult} />
 
-            {/* Clean Tab Navigation */}
-            <div className="flex items-center gap-1.5 border-b border-slate-200 pb-2 overflow-x-auto">
-              <button
-                onClick={() => setActiveTab('analytics')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  activeTab === 'analytics'
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
-              >
-                <PieChart className="w-3.5 h-3.5 text-pink-400" />
-                <span>Analytics Report</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('platforms')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  activeTab === 'platforms'
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
-              >
-                <LayoutGrid className="w-3.5 h-3.5 text-sky-400" />
-                <span>Platform Previews</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('variants')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  activeTab === 'variants'
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
-              >
-                <Wand2 className="w-3.5 h-3.5 text-purple-400" />
-                <span>A/B Rewrite Variants</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 text-white font-mono">
-                  4
-                </span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('deepdive')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  activeTab === 'deepdive'
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
-              >
-                <Compass className="w-3.5 h-3.5 text-teal-400" />
-                <span>Deep Metrics (Hook & CTA)</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('suggestions')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  activeTab === 'suggestions'
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
-              >
-                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
-                <span>Action Checklist</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 text-white font-mono">
-                  {analysisResult.suggestions.length}
-                </span>
-              </button>
+            {/* Tab Navigation */}
+            <div className="flex items-center gap-1.5 border-b border-white/[0.06] pb-2 overflow-x-auto scrollbar-thin">
+              {tabs.map((t) => {
+                const Icon = t.icon;
+                const isActive = activeTab === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => setActiveTab(t.id)}
+                    className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap border ${
+                      isActive
+                        ? 'bg-white/[0.08] text-white border-white/[0.15] shadow-lg shadow-indigo-500/10'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border-transparent'
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${t.color}`} />
+                    <span>{t.label}</span>
+                    {t.badge !== undefined && (
+                      <span
+                        className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                          t.badge === 'Unique'
+                            ? 'bg-gradient-to-r from-indigo-500 to-pink-500 text-white'
+                            : 'bg-white/[0.1] text-slate-300'
+                        }`}
+                      >
+                        {t.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Active Tab Panel */}
             <div className="pt-1 animate-fadeIn">
               {activeTab === 'analytics' && (
                 <AnalyticsReportCard analytics={analysisResult.analytics} />
+              )}
+
+              {activeTab === 'emotion' && (
+                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                  <EmotionHeatmap emotionMap={analysisResult.emotionMap} text={text} />
+                </div>
+              )}
+
+              {activeTab === 'dna' && (
+                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                  <StyleDNA profile={analysisResult.styleDNA} />
+                </div>
+              )}
+
+              {activeTab === 'schedule' && (
+                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                  <GoldenHourScheduler />
+                </div>
+              )}
+
+              {activeTab === 'wordcloud' && (
+                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                  <ViralWordCloud words={analysisResult.wordCloud} />
+                </div>
               )}
 
               {activeTab === 'platforms' && (

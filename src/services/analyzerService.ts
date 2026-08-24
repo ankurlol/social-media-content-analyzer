@@ -727,6 +727,127 @@ export function analyzeContent(rawText: string): AnalysisResult {
     suggestions,
     variants,
     analytics,
+    emotionMap: [],
+    styleDNA: { formality: 50, emotion: 50, brevity: 50, authority: 50, curiosity: 50, storytelling: 50 },
+    wordCloud: [],
     analyzedAt: new Date().toISOString(),
+  };
+}
+
+// ── Emotion map builder ──────────────────────────────────────────────────────
+import type { EmotionWord, EmotionCategory, StyleDNAProfile, WordCloudWord } from '../types';
+
+const EMOTION_LEXICON_SVC: Record<EmotionCategory, string[]> = {
+  neutral: [],
+  analytical: ['framework','strategy','data','metric','measure','analysis','research','study','insight','system','process','model','logic','evidence','statistics','proven','methodology','benchmark'],
+  curious:    ['why','how','what','wonder','curious','discover','explore','question','think','imagine','ever','perhaps','might','could','idea'],
+  excited:    ['amazing','incredible','wow','launch','excited','thrilled','love','fantastic','awesome','brilliant','breakthrough','finally','announcing','celebrate'],
+  authoritative:['proven','expert','mastery','years','experience','leadership','built','founded','led','created','established','managed','delivered','scaled','achieved'],
+  positive:   ['great','good','success','win','growth','benefit','solution','opportunity','improve','better','best','excellent','effective','valuable','perfect','happy','grateful'],
+  negative:   ['fail','mistake','problem','struggle','difficult','bad','loss','risk','danger','wrong','broken','crisis','waste','terrible','avoid','fear','burnout','pain'],
+  urgent:     ['now','today','hurry','deadline','limited','last','immediate','urgent','critical','must','stop','warning','alert','breaking','ending'],
+};
+
+function detectEmotionSvc(word: string): { emotion: EmotionCategory; intensity: number } {
+  const lower = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (lower.length < 3) return { emotion: 'neutral', intensity: 0 };
+  for (const [category, words] of Object.entries(EMOTION_LEXICON_SVC)) {
+    if (category === 'neutral') continue;
+    const match = (words as string[]).find(w => lower === w || lower.startsWith(w) || w.startsWith(lower));
+    if (match) {
+      return { emotion: category as EmotionCategory, intensity: Math.min(1, 0.5 + match.length / lower.length * 0.5) };
+    }
+  }
+  return { emotion: 'neutral', intensity: 0 };
+}
+
+function buildEmotionMapSvc(text: string): EmotionWord[] {
+  const tokens = text.match(/\S+|\s+/g) || [];
+  const result: EmotionWord[] = [];
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    if (/^\s+$/.test(token)) continue;
+    const isSpaceAfter = i + 1 < tokens.length && /^\s+$/.test(tokens[i + 1]);
+    const { emotion, intensity } = detectEmotionSvc(token);
+    result.push({ word: token, emotion, intensity, isSpaceAfter });
+  }
+  return result;
+}
+
+function computeStyleDNA(text: string, readabilityMetrics: ReadabilityMetrics): StyleDNAProfile {
+  const lower = text.toLowerCase();
+  const words = lower.split(/\s+/).filter(w => w.length > 0);
+  const totalWords = words.length || 1;
+
+  const longWords = words.filter(w => w.length > 7).length;
+  const formality = Math.min(100, Math.round(40 + (longWords / totalWords) * 120));
+
+  const emotionWords = words.filter(w => {
+    for (const [cat, wds] of Object.entries(EMOTION_LEXICON_SVC)) {
+      if (cat === 'neutral') continue;
+      if ((wds as string[]).some(e => w.startsWith(e) || e.startsWith(w))) return true;
+    }
+    return false;
+  }).length;
+  const emotion = Math.min(100, Math.round((emotionWords / totalWords) * 300));
+
+  const brevity = Math.min(100, Math.max(10, Math.round(110 - readabilityMetrics.avgWordsPerSentence * 4)));
+
+  const authorityWords = ['proven','expert','mastery','leadership','built','founded','led','created','established','managed','delivered','scaled','achieved','strategy','framework','data'];
+  const authCount = words.filter(w => authorityWords.some(a => w.startsWith(a))).length;
+  const authority = Math.min(100, Math.round(30 + (authCount / totalWords) * 400));
+
+  const questionCount = (text.match(/\?/g) || []).length;
+  const curiousWords = ['why','how','what','wonder','curious','discover','ever','imagine'];
+  const curiousCount = words.filter(w => curiousWords.includes(w)).length;
+  const curiosity = Math.min(100, Math.round(20 + questionCount * 25 + (curiousCount / totalWords) * 200));
+
+  const storyWords = ['i','we','when','after','before','started','journey','learned','story','remember','years','ago','failed','won','built','realized'];
+  const storyCount = words.filter(w => storyWords.includes(w)).length;
+  const storytelling = Math.min(100, Math.round(15 + (storyCount / totalWords) * 350));
+
+  return { formality, emotion, brevity, authority, curiosity, storytelling };
+}
+
+const HOOK_WORDS_SVC = new Set(['stop','never','always','secret','biggest','why','how','what','unpopular','warning','truth','proven','fact','data','study','research']);
+const ACTION_WORDS_SVC = new Set(['share','repost','comment','follow','save','click','join','register','download','try','dm','message','reply','subscribe']);
+const EMOTION_WORD_SVC = new Set(['amazing','incredible','excited','thrilled','love','fantastic','awesome','brilliant','great','terrible','struggle','fail','win','success','fear','pain']);
+
+function buildWordCloudSvc(text: string, keywords: string[]): WordCloudWord[] {
+  const words = text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3);
+  const freq: Record<string, number> = {};
+  words.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+  const totalOccurrences = words.length || 1;
+
+  const STOP_SMALL = new Set(['this','that','with','from','your','have','been','they','will','what','when','where','their','there','these','those','just','also','make','know','like','more']);
+
+  return Object.entries(freq)
+    .filter(([w]) => !STOP_SMALL.has(w))
+    .map(([word, frequency]) => {
+      let category: WordCloudWord['category'] = 'generic';
+      let engagementBonus = 0;
+      if (HOOK_WORDS_SVC.has(word)) { category = 'hook'; engagementBonus = 40; }
+      else if (ACTION_WORDS_SVC.has(word)) { category = 'action'; engagementBonus = 30; }
+      else if (EMOTION_WORD_SVC.has(word)) { category = 'emotion'; engagementBonus = 20; }
+      else if (keywords.includes(word)) { category = 'topic'; engagementBonus = 15; }
+      const engagementWeight = Math.min(100, Math.round((frequency / totalOccurrences) * 800 + engagementBonus));
+      return { word, frequency, engagementWeight, category };
+    })
+    .sort((a, b) => b.engagementWeight - a.engagementWeight)
+    .slice(0, 40);
+}
+
+export function analyzeContentFull(rawText: string): AnalysisResult {
+  const trimmed = rawText.trim();
+  if (!trimmed) throw new Error('Please provide text to analyze.');
+
+  const base = analyzeContent(rawText);
+  const keywords = extractTopKeywords(trimmed);
+
+  return {
+    ...base,
+    emotionMap: buildEmotionMapSvc(trimmed),
+    styleDNA: computeStyleDNA(trimmed, base.readability),
+    wordCloud: buildWordCloudSvc(trimmed, keywords),
   };
 }

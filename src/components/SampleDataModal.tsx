@@ -16,23 +16,23 @@ export const SampleDataModal: React.FC<SampleDataModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-pink-50 text-pink-600 border border-pink-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-2xl glass border border-white/[0.08] rounded-3xl p-6 sm:p-7 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               <FileText className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">Ready-Made Samples</h3>
-              <p className="text-xs text-slate-500">
+              <h3 className="text-base font-bold text-slate-100">Ready-Made Samples</h3>
+              <p className="text-xs text-slate-400">
                 Select a draft to test text parsing, scoring, and analytics reports.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 transition-colors"
+            className="p-1 rounded-lg text-slate-400 hover:text-white transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -46,25 +46,25 @@ export const SampleDataModal: React.FC<SampleDataModalProps> = ({
                 onSelectSample(sample);
                 onClose();
               }}
-              className="p-4 rounded-2xl bg-slate-50 hover:bg-pink-50/50 border border-slate-200 hover:border-pink-300 cursor-pointer transition-all flex flex-col justify-between group space-y-2"
+              className="p-4 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] hover:border-indigo-500/40 cursor-pointer transition-all flex flex-col justify-between group space-y-2.5"
             >
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold text-slate-900 group-hover:text-pink-600 transition-colors">
+                <h4 className="text-sm font-bold text-slate-200 group-hover:text-indigo-400 transition-colors">
                   {sample.title}
                 </h4>
-                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white text-slate-700 border border-slate-200">
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white/[0.05] text-slate-300 border border-white/[0.08]">
                   {sample.category}
                 </span>
               </div>
 
-              <p className="text-xs text-slate-600">{sample.description}</p>
+              <p className="text-xs text-slate-400">{sample.description}</p>
 
-              <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 font-mono line-clamp-2 italic">
+              <div className="p-2.5 rounded-xl bg-black/40 border border-white/[0.06] text-xs text-slate-300 font-mono line-clamp-2 italic">
                 "{sample.text}"
               </div>
 
               <div className="flex items-center justify-end pt-1">
-                <span className="text-xs font-bold text-pink-600 group-hover:text-pink-700 flex items-center gap-1">
+                <span className="text-xs font-bold text-indigo-400 group-hover:text-indigo-300 flex items-center gap-1">
                   <span>Load Sample</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </span>

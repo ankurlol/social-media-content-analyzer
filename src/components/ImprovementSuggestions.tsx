@@ -19,23 +19,23 @@ export const ImprovementSuggestions: React.FC<ImprovementSuggestionsProps> = ({
   };
 
   return (
-    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm space-y-4">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-xl bg-amber-50 text-amber-600 border border-amber-200">
+    <div className="glass border border-white/[0.06] rounded-2xl p-6 shadow-xl shadow-black/30 space-y-4">
+      <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+        <div className="flex items-center gap-2.5">
+          <div className="p-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
             <Flame className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-900">
+            <h3 className="text-base font-bold text-slate-200">
               Actionable Improvement Checklist
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               High-impact changes to increase algorithm ranking and viewer retention.
             </p>
           </div>
         </div>
-        <span className="text-xs font-bold text-amber-700 px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200">
-          {suggestions.length} Tips
+        <span className="text-xs font-bold text-amber-400 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+          {suggestions.length} Action Items
         </span>
       </div>
 
@@ -49,54 +49,54 @@ export const ImprovementSuggestions: React.FC<ImprovementSuggestionsProps> = ({
               key={sug.id}
               className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
                 isHigh
-                  ? 'bg-rose-50/40 border-rose-200 hover:border-rose-300'
+                  ? 'bg-rose-500/[0.04] border-rose-500/20 hover:border-rose-500/40'
                   : isMed
-                  ? 'bg-amber-50/40 border-amber-200 hover:border-amber-300'
-                  : 'bg-slate-50 border-slate-200 hover:border-slate-300'
+                  ? 'bg-amber-500/[0.04] border-amber-500/20 hover:border-amber-500/40'
+                  : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12]'
               }`}
             >
               <div>
-                <div className="flex items-center justify-between gap-2 mb-1.5">
+                <div className="flex items-center justify-between gap-2 mb-2">
                   <span
                     className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${
                       isHigh
-                        ? 'bg-rose-100 text-rose-800 border-rose-200'
+                        ? 'bg-rose-500/10 text-rose-400 border-rose-500/30'
                         : isMed
-                        ? 'bg-amber-100 text-amber-800 border-amber-200'
-                        : 'bg-slate-200 text-slate-700 border-slate-300'
+                        ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                        : 'bg-white/[0.05] text-slate-400 border-white/[0.08]'
                     }`}
                   >
                     {sug.impact} Impact · {sug.category}
                   </span>
                 </div>
 
-                <h4 className="text-sm font-bold text-slate-900 mb-1">
+                <h4 className="text-sm font-bold text-slate-200 mb-1">
                   {sug.title}
                 </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-xs text-slate-400 leading-relaxed">
                   {sug.description}
                 </p>
               </div>
 
               {sug.actionableExample && (
-                <div className="pt-2 border-t border-slate-200/80 flex flex-col space-y-1.5">
+                <div className="pt-2.5 border-t border-white/[0.06] flex flex-col space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-slate-700 flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-amber-500" /> Example Fix:
+                    <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-amber-400" /> Example Fix:
                     </span>
                     <button
                       onClick={() => handleCopy(sug.id, sug.actionableExample!)}
-                      className="text-[11px] font-semibold text-slate-500 hover:text-slate-900 flex items-center gap-1 transition-colors"
+                      className="text-[11px] font-semibold text-slate-400 hover:text-white flex items-center gap-1 transition-colors"
                     >
                       {copiedId === sug.id ? (
-                        <Check className="w-3 h-3 text-emerald-600" />
+                        <Check className="w-3 h-3 text-emerald-400" />
                       ) : (
                         <Copy className="w-3 h-3" />
                       )}
                       <span>{copiedId === sug.id ? 'Copied' : 'Copy'}</span>
                     </button>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 font-mono italic">
+                  <div className="p-2.5 rounded-xl bg-black/40 border border-white/[0.06] text-xs text-slate-300 font-mono italic">
                     "{sug.actionableExample}"
                   </div>
                 </div>

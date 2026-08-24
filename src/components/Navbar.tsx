@@ -1,7 +1,7 @@
 import React from 'react';
-import { Sparkles, FileText, Download, Key } from 'lucide-react';
+import { Zap, Key, FlaskConical, Download } from 'lucide-react';
 import type { AnalysisResult } from '../types';
-import { downloadFile, generateMarkdownReport } from '../utils/exportUtils';
+import { generateMarkdownReport, downloadFile } from '../utils/exportUtils';
 
 interface NavbarProps {
   onOpenApiKeyModal: () => void;
@@ -16,61 +16,63 @@ export const Navbar: React.FC<NavbarProps> = ({
   hasApiKey,
   analysisResult,
 }) => {
-  const handleExportMarkdown = () => {
+  const handleExport = () => {
     if (!analysisResult) return;
-    const markdown = generateMarkdownReport(analysisResult);
-    downloadFile(markdown, `social-analysis-${Date.now()}.md`, 'text/markdown');
+    const md = generateMarkdownReport(analysisResult);
+    downloadFile(md, `socialsense-report-${Date.now()}.md`);
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200/90 bg-white/80 backdrop-blur-xl">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-        {/* Brand */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-600 to-rose-500 flex items-center justify-center shadow-md shadow-pink-500/20">
-            <Sparkles className="w-4 h-4 text-white" />
+    <nav className="sticky top-0 z-50 glass border-b border-white/[0.06]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+
+        {/* Logo */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+            <Zap className="w-4 h-4 text-white" />
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="font-extrabold text-base text-slate-900 tracking-tight">SocialSense</span>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-pink-50 text-pink-600 border border-pink-200">
-              REPORT AI
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-sm font-black text-white tracking-tight">SocialSense</span>
+            <span
+              className="text-[10px] font-bold px-1.5 py-0.5 rounded-md border border-indigo-500/40 text-indigo-400 bg-indigo-500/10"
+            >
+              AI
             </span>
           </div>
         </div>
 
-        {/* Actions */}
+        {/* Right controls */}
         <div className="flex items-center gap-2">
           <button
             onClick={onOpenSampleModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl text-slate-700 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-white/[0.06] border border-transparent hover:border-white/[0.08] transition-all"
           >
-            <FileText className="w-3.5 h-3.5 text-pink-600" />
-            <span>Load Samples</span>
+            <FlaskConical className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Load Samples</span>
           </button>
 
           <button
             onClick={onOpenApiKeyModal}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
               hasApiKey
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/15'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.06] border-white/[0.06]'
             }`}
           >
-            <Key className="w-3.5 h-3.5 text-amber-500" />
+            <Key className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{hasApiKey ? 'AI Connected' : 'Connect AI'}</span>
           </button>
 
-          {analysisResult && (
-            <button
-              onClick={handleExportMarkdown}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all active:scale-95"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Export</span>
-            </button>
-          )}
+          <button
+            onClick={handleExport}
+            disabled={!analysisResult}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 shadow-lg shadow-indigo-500/25 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export</span>
+          </button>
         </div>
       </div>
-    </header>
+    </nav>
   );
 };

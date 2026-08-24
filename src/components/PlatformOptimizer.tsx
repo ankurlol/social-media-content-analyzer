@@ -3,13 +3,11 @@ import {
   CheckCircle2,
   AlertTriangle,
   Lightbulb,
-  Share2,
   Heart,
   MessageCircle,
   Repeat2,
-  Bookmark,
   Send,
-  MoreHorizontal
+  MoreHorizontal,
 } from 'lucide-react';
 import type { PlatformScore, SupportedPlatform } from '../types';
 
@@ -51,30 +49,30 @@ const PLATFORM_CONFIG: Record<
   linkedin: {
     name: 'LinkedIn',
     icon: LinkedInIcon,
-    color: 'text-sky-600',
-    bgActive: 'bg-sky-50',
-    borderActive: 'border-sky-300 text-sky-800',
+    color: 'text-indigo-400',
+    bgActive: 'bg-indigo-500/15',
+    borderActive: 'border-indigo-500/40 text-indigo-300',
   },
   twitter: {
     name: 'Twitter / X',
     icon: TwitterIcon,
-    color: 'text-slate-900',
-    bgActive: 'bg-slate-100',
-    borderActive: 'border-slate-400 text-slate-900',
+    color: 'text-cyan-400',
+    bgActive: 'bg-cyan-500/15',
+    borderActive: 'border-cyan-500/40 text-cyan-300',
   },
   instagram: {
     name: 'Instagram',
     icon: InstagramIcon,
-    color: 'text-pink-600',
-    bgActive: 'bg-pink-50',
-    borderActive: 'border-pink-300 text-pink-800',
+    color: 'text-pink-400',
+    bgActive: 'bg-pink-500/15',
+    borderActive: 'border-pink-500/40 text-pink-300',
   },
   facebook: {
     name: 'Facebook',
     icon: FacebookIcon,
-    color: 'text-blue-600',
-    bgActive: 'bg-blue-50',
-    borderActive: 'border-blue-300 text-blue-800',
+    color: 'text-blue-400',
+    bgActive: 'bg-blue-500/15',
+    borderActive: 'border-blue-500/40 text-blue-300',
   },
 };
 
@@ -92,19 +90,19 @@ export const PlatformOptimizer: React.FC<PlatformOptimizerProps> = ({
   );
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-sm space-y-6">
+    <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30 space-y-6">
       {/* Selector Tabs */}
-      <div className="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-slate-100">
+      <div className="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-white/[0.06]">
         <div>
-          <h3 className="text-base font-bold text-slate-900">
+          <h3 className="text-base font-bold text-slate-200">
             Platform Distribution & Feed Simulator
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400">
             Verify layout compliance against platform-specific algorithm limits.
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200/80">
+        <div className="flex items-center gap-1.5 p-1 bg-black/40 rounded-xl border border-white/[0.06]">
           {(Object.keys(PLATFORM_CONFIG) as SupportedPlatform[]).map((p) => {
             const cfg = PLATFORM_CONFIG[p];
             const Icon = cfg.icon;
@@ -118,12 +116,12 @@ export const PlatformOptimizer: React.FC<PlatformOptimizerProps> = ({
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   isSelected
                     ? `${cfg.bgActive} ${cfg.borderActive} border shadow-sm`
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/80 border border-transparent'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
                 }`}
               >
                 <Icon className={`w-3.5 h-3.5 ${cfg.color}`} />
                 <span className="hidden sm:inline">{cfg.name}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-white font-bold' : 'bg-slate-200 text-slate-600'}`}>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${isSelected ? 'bg-white/10 font-bold' : 'bg-white/[0.04] text-slate-400'}`}>
                   {score}
                 </span>
               </button>
@@ -134,42 +132,42 @@ export const PlatformOptimizer: React.FC<PlatformOptimizerProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Mockup Preview */}
-        <div className="lg:col-span-6 bg-slate-50/70 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between shadow-inner">
+        <div className="lg:col-span-6 bg-black/30 border border-white/[0.06] rounded-2xl p-5 flex flex-col justify-between shadow-inner">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200/80 mb-3">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-600 to-rose-500 flex items-center justify-center font-bold text-sm text-white shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-pink-500 flex items-center justify-center font-bold text-sm text-white shadow-sm shadow-indigo-500/30">
                   YOU
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-bold text-slate-900">Your Channel Profile</span>
-                    <span className="text-[11px] text-slate-500">· 1st</span>
+                    <span className="text-xs font-bold text-slate-200">Your Channel Profile</span>
+                    <span className="text-[11px] text-slate-400">· 1st</span>
                   </div>
                   <span className="text-[10px] text-slate-500 block">
                     Product Leader & Creator · Just now
                   </span>
                 </div>
               </div>
-              <MoreHorizontal className="w-4 h-4 text-slate-400" />
+              <MoreHorizontal className="w-4 h-4 text-slate-500" />
             </div>
 
-            <div className="text-xs text-slate-800 leading-relaxed font-sans whitespace-pre-wrap max-h-[260px] overflow-y-auto pr-1">
+            <div className="text-xs text-slate-200 leading-relaxed font-sans whitespace-pre-wrap max-h-[260px] overflow-y-auto pr-1">
               {postText || 'Your post preview will appear here...'}
             </div>
           </div>
 
-          <div className="pt-3 mt-4 border-t border-slate-200/80 flex items-center justify-around text-slate-500 text-xs">
-            <button className="flex items-center gap-1.5 hover:text-pink-600 transition-colors">
+          <div className="pt-3 mt-4 border-t border-white/[0.06] flex items-center justify-around text-slate-400 text-xs">
+            <button className="flex items-center gap-1.5 hover:text-pink-400 transition-colors">
               <Heart className="w-4 h-4" /> <span>Like</span>
             </button>
-            <button className="flex items-center gap-1.5 hover:text-pink-600 transition-colors">
+            <button className="flex items-center gap-1.5 hover:text-indigo-400 transition-colors">
               <MessageCircle className="w-4 h-4" /> <span>Comment</span>
             </button>
-            <button className="flex items-center gap-1.5 hover:text-pink-600 transition-colors">
+            <button className="flex items-center gap-1.5 hover:text-cyan-400 transition-colors">
               <Repeat2 className="w-4 h-4" /> <span>Repost</span>
             </button>
-            <button className="flex items-center gap-1.5 hover:text-pink-600 transition-colors">
+            <button className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors">
               <Send className="w-4 h-4" /> <span>Send</span>
             </button>
           </div>
@@ -177,21 +175,21 @@ export const PlatformOptimizer: React.FC<PlatformOptimizerProps> = ({
 
         {/* Details Column */}
         <div className="lg:col-span-6 space-y-4">
-          <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 flex items-center justify-between">
+          <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4 flex items-center justify-between">
             <div>
-              <span className="text-xs text-slate-500 block">Channel Score</span>
-              <span className="text-2xl font-black text-slate-900">
+              <span className="text-xs text-slate-400 block">Channel Score</span>
+              <span className="text-2xl font-black text-white font-mono">
                 {currentData.score} <span className="text-xs font-normal text-slate-500">/ 100</span>
               </span>
             </div>
 
             <div className="text-right">
-              <span className="text-xs text-slate-500 block">Character Load</span>
+              <span className="text-xs text-slate-400 block">Character Load</span>
               <span
                 className={`text-xs font-mono font-bold ${
                   currentData.status === 'too-long'
-                    ? 'text-rose-600'
-                    : 'text-slate-900'
+                    ? 'text-rose-400'
+                    : 'text-slate-200'
                 }`}
               >
                 {currentData.characterCount} / {currentData.characterLimit}
@@ -200,31 +198,31 @@ export const PlatformOptimizer: React.FC<PlatformOptimizerProps> = ({
           </div>
 
           <div>
-            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
               <div
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  currentData.status === 'too-long' ? 'bg-rose-500' : 'bg-pink-600'
+                  currentData.status === 'too-long' ? 'bg-rose-500' : 'bg-gradient-to-r from-indigo-500 to-pink-500'
                 }`}
                 style={{ width: `${charPercent}%` }}
               />
             </div>
             {currentData.status === 'too-long' && (
-              <p className="text-[11px] text-rose-600 font-medium mt-1 flex items-center gap-1">
-                <AlertTriangle className="w-3.5 h-3.5" /> Exceeds character limit for standard post.
+              <p className="text-[11px] text-rose-400 font-medium mt-1.5 flex items-center gap-1">
+                <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> Exceeds character limit for standard post.
               </p>
             )}
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
-            <span className="text-slate-600">Optimal Hashtag Density:</span>
-            <span className="font-bold text-pink-600">
+          <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs">
+            <span className="text-slate-400">Optimal Hashtag Density:</span>
+            <span className="font-bold text-indigo-400 font-mono">
               {currentData.hashtagRecommendation.suggestedCount} (Current: {currentData.hashtagRecommendation.currentCount})
             </span>
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-              <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-300">
+              <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
               <span>Algorithm Insights</span>
             </div>
 
@@ -232,9 +230,9 @@ export const PlatformOptimizer: React.FC<PlatformOptimizerProps> = ({
               {currentData.specificTips.map((tip, idx) => (
                 <li
                   key={idx}
-                  className="text-xs text-slate-700 bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 flex items-start gap-2"
+                  className="text-xs text-slate-300 bg-white/[0.02] border border-white/[0.06] rounded-xl p-2.5 flex items-start gap-2"
                 >
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                   <span>{tip}</span>
                 </li>
               ))}

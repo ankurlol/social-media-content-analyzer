@@ -153,7 +153,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-between bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm">
+    <div className="w-full h-full flex flex-col justify-between glass rounded-2xl border border-white/[0.06] p-4 shadow-xl shadow-black/30">
       <input
         ref={fileInputRef}
         type="file"
@@ -169,18 +169,18 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
         onClick={() => !processingState.isProcessing && fileInputRef.current?.click()}
         className={`group cursor-pointer rounded-xl border-2 border-dashed transition-all p-5 text-center flex flex-col items-center justify-center min-h-[170px] ${
           isDragOver
-            ? 'border-pink-500 bg-pink-50/40'
-            : 'border-slate-200 hover:border-pink-300 bg-slate-50/50 hover:bg-slate-50'
+            ? 'border-indigo-500 bg-indigo-500/10'
+            : 'border-white/[0.1] hover:border-indigo-500/50 bg-white/[0.02] hover:bg-white/[0.04]'
         }`}
       >
         {processingState.isProcessing ? (
           <div className="flex flex-col items-center space-y-3 max-w-xs w-full">
-            <Loader2 className="w-6 h-6 text-pink-600 animate-spin" />
-            <div className="space-y-1 w-full text-center">
-              <p className="text-xs font-semibold text-slate-800">{processingState.statusMessage}</p>
-              <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+            <Loader2 className="w-6 h-6 text-indigo-400 animate-spin" />
+            <div className="space-y-1.5 w-full text-center">
+              <p className="text-xs font-semibold text-slate-200">{processingState.statusMessage}</p>
+              <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
                 <div
-                  className="bg-pink-600 h-1.5 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-indigo-500 to-pink-500 h-1.5 rounded-full transition-all duration-300 shadow-sm shadow-indigo-500/50"
                   style={{ width: `${processingState.progress}%` }}
                 />
               </div>
@@ -188,33 +188,33 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
           </div>
         ) : activeFile && processingState.stage === 'completed' ? (
           <div className="flex flex-col items-center space-y-2">
-            <div className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+            <div className="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-slate-800 truncate max-w-[200px]">
+              <span className="text-xs font-semibold text-slate-200 truncate max-w-[200px]">
                 {activeFile.name}
               </span>
               <button
                 onClick={handleReset}
-                className="p-1 text-slate-400 hover:text-slate-700 rounded"
+                className="p-1 text-slate-400 hover:text-slate-200 rounded hover:bg-white/[0.08]"
                 title="Remove"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
-            <span className="text-[11px] text-emerald-600 font-medium">Ready for analysis</span>
+            <span className="text-[11px] text-emerald-400 font-medium">Ready for live analysis</span>
           </div>
         ) : (
           <div className="flex flex-col items-center space-y-2.5">
-            <div className="w-10 h-10 rounded-xl bg-pink-50 border border-pink-100 flex items-center justify-center group-hover:scale-105 transition-transform text-pink-600">
+            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center group-hover:scale-105 transition-transform text-indigo-400 shadow-lg shadow-indigo-500/10">
               <UploadCloud className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-slate-800">
-                <span className="text-pink-600 underline decoration-pink-300">Upload Document</span> or Drag & Drop
+              <p className="text-xs font-semibold text-slate-200">
+                <span className="text-indigo-400 underline decoration-indigo-400/40">Upload Document</span> or Drag & Drop
               </p>
-              <p className="text-[11px] text-slate-500 mt-0.5">
+              <p className="text-[11px] text-slate-400 mt-0.5">
                 PDFs, Screenshots, or Scanned Images
               </p>
             </div>
@@ -222,8 +222,8 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
         )}
 
         {processingState.stage === 'error' && (
-          <div className="mt-3 p-2 rounded-lg bg-rose-50 border border-rose-200 flex items-center gap-2 text-rose-700 text-xs text-left">
-            <AlertCircle className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+          <div className="mt-3 p-2 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center gap-2 text-rose-300 text-xs text-left">
+            <AlertCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
             <span>{processingState.errorMessage || 'Extraction error'}</span>
           </div>
         )}
