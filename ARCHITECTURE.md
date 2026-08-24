@@ -32,7 +32,21 @@ graph TD
 
 ---
 
-## 2. Component Pipeline Details
+## 2. Projected Audience Engagement Distribution
+
+GitHub natively renders this Mermaid pie chart directly representing the simulated interaction distribution:
+
+```mermaid
+pie title Projected Audience Engagement Distribution
+    "Reactions" : 65
+    "Comments" : 18
+    "Shares & Reposts" : 11
+    "Post Saves & Follows" : 6
+```
+
+---
+
+## 3. Component Pipeline Details
 
 ### A. Text Extraction Engine (`src/services/pdfParser.ts` & `ocrService.ts`)
 - **PDF Extraction**:
@@ -75,7 +89,7 @@ Simulates reach and engagement based on draft quality:
 
 ---
 
-## 3. Privacy, Security & Offline Resilience
+## 4. Privacy, Security & Offline Resilience
 
 1. **Client-Side Processing**: All PDF parsing and OCR text extraction happen directly inside the user's browser sandbox. No user files or documents are transmitted to external servers.
 2. **Zero Mandatory Backend Requirement**: The application operates fully standalone offline without requiring paid third-party infrastructure.

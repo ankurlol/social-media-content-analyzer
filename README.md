@@ -10,6 +10,29 @@ A modern, production-ready web application that extracts text from **PDF documen
 
 ---
 
+## 📊 Projected Audience Engagement Report
+
+The application includes an interactive analytics projection engine that models audience distribution, reach, and interaction breakdowns:
+
+```mermaid
+pie title Projected Audience Engagement Distribution
+    "Reactions" : 65
+    "Comments" : 18
+    "Shares & Reposts" : 11
+    "Post Saves & Follows" : 6
+```
+
+### 📈 Engagement Metrics Overview
+
+| Metric | Typical Simulation | Algorithmic Impact |
+| :--- | :--- | :--- |
+| **Reactions** | ~65% of interactions | Rapid feedback signal to feed algorithms |
+| **Comments** | ~18% of interactions | Highest positive signal for LinkedIn & Facebook reach |
+| **Shares / Reposts** | ~11% of interactions | Primary driver for viral exponential distribution on Twitter/X |
+| **Post Saves & Follows** | ~6% of interactions | Key signal for Instagram Explore & high-intent audiences |
+
+---
+
 ## 🎯 Key Features
 
 ### 1. 📄 Document Upload & Extraction
@@ -33,7 +56,7 @@ A modern, production-ready web application that extracts text from **PDF documen
 - **Projected Engagement**: Reactions, Comments, Shares/Reposts, Post Saves, and Follower Growth.
 - **Key KPIs**: Total Estimated Reach and Predicted Engagement Rate (%).
 - **Interactive Donut Chart**: Visual distribution across reactions, comments, shares, and saves.
-- **Audience Geographies**: Top regions by reach (United States, United Kingdom, Germany, Canada, APAC).
+- **Audience Geographies**: Top regions by reach (United States 42%, United Kingdom 28%, Germany 14%, Canada 9%, APAC 7%).
 
 ### 4. 📱 Multi-Platform Algorithm Audits & Live Previews
 - **Platform-Specific Optimization**:
@@ -140,7 +163,7 @@ social-media-content-analyzer/
 ├── APPROACH.md                # 200-word candidate assessment write-up
 ├── ARCHITECTURE.md            # Technical design & math scoring model
 ├── SUBMISSION.md              # Email submission template & checklist
-├── README.md                  # Comprehensive documentation
+├── README.md                  # Comprehensive documentation with pie chart
 ├── index.html                 # HTML template with typography
 ├── package.json               # Dependencies and build scripts
 ├── tsconfig.json              # TypeScript configuration
