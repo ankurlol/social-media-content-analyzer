@@ -13,14 +13,15 @@ import {
   TrendingUp,
   Plus,
   Lock,
-  CheckCircle,
   ShieldCheck,
-  Zap,
   Target,
   X,
+  ArrowUpRight,
+  Sparkles,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { ProjectedAnalytics } from '../types';
+import { MetricoolTimelineChart } from './MetricoolTimelineChart';
 
 interface AnalyticsReportCardProps {
   analytics: ProjectedAnalytics;
@@ -91,7 +92,7 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
             )}
           </div>
           <p className="text-xs text-slate-400 mt-0.5">
-            Algorithmic distribution simulation and projected audience response
+            Algorithmic distribution simulation, Metricool time-series evolution & projected audience response
           </p>
         </div>
 
@@ -128,6 +129,17 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
         </div>
       </div>
 
+      {/* Sprout Social / Metricool Multi-Metric Timeline Chart */}
+      <div className="bg-white/[0.02] rounded-2xl p-5 border border-white/[0.06] shadow-md">
+        <MetricoolTimelineChart
+          totalReach={reach}
+          totalReactions={reactions}
+          totalComments={comments}
+          totalShares={shares}
+          isViralBoosted={isViralBoosted}
+        />
+      </div>
+
       {/* Main Analytics Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Engagement breakdown & KPI cards */}
@@ -149,9 +161,14 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
                 <Smile className="w-4 h-4 text-indigo-400" />
                 <span>Reactions</span>
               </div>
-              <span className="text-sm font-bold text-white font-mono">
-                {fmt(reactions)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono font-bold text-[10px]">
+                  +24.8%
+                </span>
+                <span className="text-sm font-bold text-white font-mono">
+                  {fmt(reactions)}
+                </span>
+              </div>
             </div>
 
             {/* Comments */}
@@ -160,9 +177,14 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
                 <MessageCircle className="w-4 h-4 text-pink-400" />
                 <span>Comments</span>
               </div>
-              <span className="text-sm font-bold text-white font-mono">
-                {fmt(comments)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono font-bold text-[10px]">
+                  +18.2%
+                </span>
+                <span className="text-sm font-bold text-white font-mono">
+                  {fmt(comments)}
+                </span>
+              </div>
             </div>
 
             {/* Shares */}
@@ -171,9 +193,14 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
                 <Share2 className="w-4 h-4 text-cyan-400" />
                 <span>Shares / Reposts</span>
               </div>
-              <span className="text-sm font-bold text-white font-mono">
-                {fmt(shares)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono font-bold text-[10px]">
+                  +31.5%
+                </span>
+                <span className="text-sm font-bold text-white font-mono">
+                  {fmt(shares)}
+                </span>
+              </div>
             </div>
 
             {/* Post Saves */}
@@ -182,9 +209,14 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
                 <Bookmark className="w-4 h-4 text-amber-400" />
                 <span>Post Saves</span>
               </div>
-              <span className="text-sm font-bold text-white font-mono">
-                {fmt(postSaves)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono font-bold text-[10px]">
+                  +12.0%
+                </span>
+                <span className="text-sm font-bold text-white font-mono">
+                  {fmt(postSaves)}
+                </span>
+              </div>
             </div>
 
             {/* Page Likes */}
@@ -193,9 +225,14 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
                 <ThumbsUp className="w-4 h-4 text-emerald-400" />
                 <span>Follower Growth</span>
               </div>
-              <span className="text-sm font-bold text-white font-mono">
-                {fmt(pageLikes)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono font-bold text-[10px]">
+                  +9.4%
+                </span>
+                <span className="text-sm font-bold text-white font-mono">
+                  {fmt(pageLikes)}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -207,7 +244,12 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
                 <UserCheck className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-semibold text-slate-400 block">Total Reach</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[11px] font-semibold text-slate-400 block">Total Reach</span>
+                  <span className="text-[9px] text-emerald-400 font-bold flex items-center">
+                    <ArrowUpRight className="w-2.5 h-2.5" /> +28%
+                  </span>
+                </div>
                 <span className="text-lg font-black text-white font-mono tracking-tight">
                   {fmt(reach)}
                 </span>
@@ -220,7 +262,12 @@ export const AnalyticsReportCard: React.FC<AnalyticsReportCardProps> = ({ analyt
                 <Percent className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-semibold text-slate-400 block">Eng. Rate</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[11px] font-semibold text-slate-400 block">Eng. Rate</span>
+                  <span className="text-[9px] text-emerald-400 font-bold flex items-center">
+                    <ArrowUpRight className="w-2.5 h-2.5" /> +1.4%
+                  </span>
+                </div>
                 <span className="text-lg font-black text-white font-mono tracking-tight">
                   {engRate}%
                 </span>
