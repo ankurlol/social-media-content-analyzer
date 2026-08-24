@@ -170,7 +170,7 @@ function analyzeHook(text: string, keywords: string[]): HookAnalysis {
   let hookType: HookAnalysis['type'] = 'Generic/Weak';
   let score = 45;
   let critique = 'The opening line starts passively without creating intrigue or scroll-stopping tension.';
-  let suggestedAlternative = `🔥 90% of people get ${topTopic} wrong. Here is what actually works:`;
+  let suggestedAlternative = `90% of people get ${topTopic} wrong. Here is what actually works:`;
 
   if (firstLine.includes('?') || /^(why|how|what|are you|is it|who|have you)/i.test(firstLine)) {
     hookType = 'Question';
@@ -252,7 +252,6 @@ function analyzeToneAndSentiment(text: string): {
     primary = 'Educational';
   }
 
-  // Sentiment scoring
   const posWords = ['great', 'best', 'awesome', 'win', 'success', 'growth', 'love', 'valuable', 'super', 'effective', 'excited', 'empower', 'benefit', 'opportunity', 'solution'];
   const negWords = ['fail', 'bad', 'loss', 'mistake', 'poor', 'hate', 'terrible', 'struggle', 'difficult', 'pain', 'risk', 'problem', 'burnout', 'crisis', 'waste'];
   
@@ -287,14 +286,12 @@ function analyzeHashtags(text: string, keywords: string[]): { extracted: string[
 
   const dynamicTags = new Set<string>();
 
-  // 1. Generate tags directly from prominent keywords in the user's text
   keywords.forEach(kw => {
     if (kw.length >= 3) {
       dynamicTags.add(toPascalHashtag(kw));
     }
   });
 
-  // 2. Add contextual industry suggestions
   const lower = text.toLowerCase();
   if (lower.includes('tech') || lower.includes('software') || lower.includes('code') || lower.includes('dev')) {
     ['#TechTrends', '#SoftwareEngineering', '#Innovation'].forEach(t => dynamicTags.add(t));
@@ -353,8 +350,8 @@ function analyzeCTA(text: string, keywords: string[]): AnalysisResult['callToAct
 
   const suggestions = [
     `Ask an open question ${topic}: "What has been your biggest win or obstacle with this?"`,
-    'Prompt readers to bookmark: "📌 Save this post for your next project or campaign."',
-    'Drive distribution: "🔁 Repost this to share the insight with your network."',
+    'Prompt readers to bookmark: "Save this post for your next project or campaign."',
+    'Drive distribution: "Repost this to share the insight with your network."',
   ];
 
   return {
@@ -409,7 +406,7 @@ function evaluatePlatforms(text: string, hashtagCount: number): Record<Supported
   if (len > 280) {
     twScore -= 35;
     twStatus = 'too-long';
-    twTips.push(`Post length (${len} chars) exceeds the 280-character single tweet limit. Split into a 🧵 Thread or trim down.`);
+    twTips.push(`Post length (${len} chars) exceeds the 280-character single tweet limit. Split into a Thread or trim down.`);
   } else if (len < 50) {
     twScore -= 15;
     twStatus = 'too-short';
@@ -430,7 +427,7 @@ function evaluatePlatforms(text: string, hashtagCount: number): Record<Supported
   let igStatus: PlatformScore['status'] = 'optimal';
 
   const first125 = text.slice(0, 125);
-  if (first125.includes('?') || first125.includes('🔥') || first125.includes('👇') || first125.includes('!')) {
+  if (first125.includes('?') || first125.includes('!') || first125.includes(':')) {
     igScore += 12;
     igTips.push('Opening hook is strong before Instagram\'s 125-character "...more" caption cut-off.');
   } else {
@@ -573,7 +570,7 @@ function generateSuggestions(
       impact: 'High',
       title: 'Include an Explicit Call to Action (CTA)',
       description: 'Posts with an explicit question or next-step direction receive up to 3.8x more comments and shares.',
-      actionableExample: `👇 What is your biggest challenge when it comes to ${mainKw}? Let's discuss below!`,
+      actionableExample: `What is your biggest challenge when it comes to ${mainKw}? Let's discuss below.`,
     });
   }
 
@@ -585,7 +582,7 @@ function generateSuggestions(
       impact: 'Medium',
       title: 'Break Down Dense Text Paragraphs',
       description: 'Mobile readers experience cognitive fatigue from blocks of text. Limit paragraphs to 1-2 punchy sentences with blank line breaks in between.',
-      actionableExample: 'Add line breaks and bullet points (•) for fast scanning.',
+      actionableExample: 'Add line breaks and bullet points for fast scanning.',
     });
   }
 
@@ -609,19 +606,6 @@ function generateSuggestions(
       impact: 'Medium',
       title: 'Reduce Sentence Length',
       description: `Your average sentence length is ${readability.avgWordsPerSentence} words. Aim for 10-14 words per sentence to maintain high reading velocity.`,
-    });
-  }
-
-  // 6. Visual anchors
-  const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}]/u;
-  if (!emojiRegex.test(text)) {
-    suggestions.push({
-      id: 'sug-emojis',
-      category: 'engagement',
-      impact: 'Low',
-      title: 'Add Contextual Emojis as Visual Anchors',
-      description: 'Sprinkling 2-3 clean emojis highlights key insights and guides the reader\'s eye down the post.',
-      actionableExample: '👉 Key Insight: | 💡 Pro-tip: | 📌 Save for later:',
     });
   }
 
@@ -653,37 +637,41 @@ function generateDynamicVariants(
   return [
     {
       id: 'variant-viral',
-      title: '🔥 Viral & Punchy Hook Formula',
+      title: 'Viral & Punchy Hook Formula',
       description: 'Engineered for maximum curiosity, pattern-interruption, and fast shares.',
       style: 'viral-punchy',
       estimatedEngagementBoost: '+45% Reach',
-      content: `🔥 90% of people get ${topKeyword.toUpperCase()} completely wrong.\n\nHere is the exact framework to fix it:\n\n👉 1. ${takeaway1}\n👉 2. ${takeaway2}\n👉 3. ${takeaway3}\n\nThe result? 10x better execution with half the effort.\n\n👇 Agree or disagree? Let me know below.\n\n${tagString}`,
+      content: `90% of people get ${topTopicFormatting(topKeyword)} completely wrong.\n\nHere is the exact framework to fix it:\n\n1. ${takeaway1}\n2. ${takeaway2}\n3. ${takeaway3}\n\nThe result: 10x better execution with half the effort.\n\nAgree or disagree? Let me know below.\n\n${tagString}`,
     },
     {
       id: 'variant-leadership',
-      title: '💡 Thought Leadership & Storytelling',
+      title: 'Thought Leadership & Storytelling',
       description: 'Optimized for executive authority, personal branding, and high LinkedIn dwell time.',
       style: 'thought-leadership',
       estimatedEngagementBoost: '+60% Dwell Time',
-      content: `A few years ago, I thought mastering ${topKeyword} was about doing more.\n\nI was wrong. It was about doing the right things with relentless clarity.\n\nHere are 3 lessons learned the hard way:\n\n1. ${takeaway1}\n2. ${takeaway2}\n3. ${takeaway3}\n\nWhen you stop overcomplicating the process, momentum takes care of itself.\n\n📌 Save this post if you are refining your ${secondKeyword} this quarter.\n\n${tagString}`,
+      content: `A few years ago, I thought mastering ${topKeyword} was about doing more.\n\nI was wrong. It was about doing the right things with relentless clarity.\n\nHere are 3 lessons learned the hard way:\n\n1. ${takeaway1}\n2. ${takeaway2}\n3. ${takeaway3}\n\nWhen you stop overcomplicating the process, momentum takes care of itself.\n\nSave this post if you are refining your ${secondKeyword} this quarter.\n\n${tagString}`,
     },
     {
       id: 'variant-scannable',
-      title: '📊 Scannable Bullets & Key Takeaways',
+      title: 'Scannable Bullets & Key Takeaways',
       description: 'Clean visual hierarchy designed for rapid consumption on mobile devices.',
       style: 'scannable-bullets',
       estimatedEngagementBoost: '+35% Saves & Reposts',
-      content: `💡 Quick Breakdown on ${topKeyword.charAt(0).toUpperCase() + topKeyword.slice(1)}:\n\n• Point 1: ${takeaway1}\n• Point 2: ${takeaway2}\n• Point 3: ${takeaway3}\n\n🎯 Bottom Line:\nExecution always beats complex planning.\n\n🔁 Repost this to share the insight with your network.\n\n${tagString}`,
+      content: `Quick Breakdown on ${topKeyword.charAt(0).toUpperCase() + topKeyword.slice(1)}:\n\n- Point 1: ${takeaway1}\n- Point 2: ${takeaway2}\n- Point 3: ${takeaway3}\n\nBottom Line:\nExecution always beats complex planning.\n\nRepost this to share the insight with your network.\n\n${tagString}`,
     },
     {
       id: 'variant-discussion',
-      title: '💬 Community Discussion Driver',
+      title: 'Community Discussion Driver',
       description: 'Formulated specifically to stimulate comments, debates, and peer interaction.',
       style: 'discussion-driver',
       estimatedEngagementBoost: '+80% Comments',
-      content: `Quick question for everyone in my network regarding ${topKeyword}:\n\n"${takeaway1}"\n\nWhat has been your personal experience with this? What works best for you?\n\nDrop your perspective in the comments below — looking forward to reading every reply! 👇\n\n${tagString}`,
+      content: `Quick question for everyone in my network regarding ${topKeyword}:\n\n"${takeaway1}"\n\nWhat has been your personal experience with this? What works best for you?\n\nDrop your perspective in the comments below - looking forward to reading every reply.\n\n${tagString}`,
     },
   ];
+}
+
+function topTopicFormatting(topic: string): string {
+  return topic.toUpperCase();
 }
 
 /**

@@ -1,6 +1,6 @@
-# 🏛️ System Architecture & Technical Design
+# System Architecture & Technical Design
 
-**Project:** Social Media Content Analyzer & Optimizer (`SocialSense AI`)  
+**Project:** Social Media Content Analyzer & Optimizer (SocialSense AI)  
 **Technology Stack:** React 19, TypeScript, Vite, Tailwind CSS v4, PDF.js, Tesseract.js, Lucide Icons
 
 ---
@@ -48,7 +48,7 @@ pie title Projected Audience Engagement Distribution
 
 ## 3. Component Pipeline Details
 
-### A. Text Extraction Engine (`src/services/pdfParser.ts` & `ocrService.ts`)
+### A. Text Extraction Engine (src/services/pdfParser.ts & ocrService.ts)
 - **PDF Extraction**:
   - Uses `pdfjs-dist` to iterate across document pages.
   - Computes vertical coordinate differentials (`deltaY > 12px`) between text tokens to accurately preserve paragraph breaks and heading hierarchy rather than collapsing text into a single line.
@@ -57,8 +57,8 @@ pie title Projected Audience Engagement Distribution
   - Streams progress callbacks (`recognizing text: 0% -> 100%`) to drive UI loading indicators.
   - Normalizes line feeds (`\r\n` -> `\n`) and filters OCR noise.
 
-### B. NLP Content & Engagement Scoring Matrix (`src/services/analyzerService.ts`)
-The aggregate **Engagement Score (0–100)** is computed using weighted heuristic models:
+### B. NLP Content & Engagement Scoring Matrix (src/services/analyzerService.ts)
+The aggregate **Engagement Score (0-100)** is computed using weighted heuristic models:
 
 $$\text{Overall Score} = 0.25 \times \text{Hook} + 0.20 \times \text{Clarity} + 0.20 \times \text{CTA} + 0.20 \times \text{Emotion} + 0.15 \times \text{Formatting}$$
 
@@ -82,8 +82,8 @@ Simulates reach and engagement based on draft quality:
 - **Audience Geographies**: Top regions by distribution (US 42%, UK 28%, Germany 14%, Canada 9%, APAC 7%).
 
 ### D. Multi-Platform Compliance Engine
-- **LinkedIn**: Analyzes 800–1,500 character sweet spot, 3–5 hashtag policy, dwell time formatting.
-- **Twitter / X**: 280-character strict limit gauge, 1–2 tag policy, thread conversion suggestions.
+- **LinkedIn**: Analyzes 800-1,500 character sweet spot, 3-5 hashtag policy, dwell time formatting.
+- **Twitter / X**: 280-character strict limit gauge, 1-2 tag policy, thread conversion suggestions.
 - **Instagram**: First 125-character cut-off check before "...more" truncation, hashtag cluster guidance.
 - **Facebook**: Question triggers and conversational commentary signals.
 

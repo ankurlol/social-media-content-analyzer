@@ -1,16 +1,16 @@
-# 🚀 SocialSense AI — Social Media Content Analyzer & Optimizer
+# SocialSense AI - Social Media Content Analyzer & Optimizer
 
-A modern, production-ready web application that extracts text from **PDF documents** and **images/scans (via OCR)** to analyze social media posts, calculate multi-dimensional engagement scores, and suggest algorithmic engagement improvements.
-
----
-
-## 📌 Project Overview
-
-**SocialSense AI** solves the challenge of optimizing social media drafts before publishing. Whether you upload a PDF marketing brief, a scanned flyer, an infographic screenshot, or directly type a draft, the analyzer extracts text, evaluates its viral potential, and outputs actionable platform-specific recommendations.
+A modern, production-ready web application that extracts text from PDF documents and images/scans (via OCR) to analyze social media posts, calculate multi-dimensional engagement scores, and suggest algorithmic engagement improvements.
 
 ---
 
-## 📊 Projected Audience Engagement Report
+## Project Overview
+
+SocialSense AI solves the challenge of optimizing social media drafts before publishing. Whether you upload a PDF marketing brief, a scanned flyer, an infographic screenshot, or directly type a draft, the analyzer extracts text, evaluates its viral potential, and outputs actionable platform-specific recommendations.
+
+---
+
+## Projected Audience Engagement Report
 
 The application includes an interactive analytics projection engine that models audience distribution, reach, and interaction breakdowns:
 
@@ -22,7 +22,7 @@ pie title Projected Audience Engagement Distribution
     "Post Saves & Follows" : 6
 ```
 
-### 📈 Engagement Metrics Overview
+### Engagement Metrics Overview
 
 | Metric | Typical Simulation | Algorithmic Impact |
 | :--- | :--- | :--- |
@@ -33,40 +33,40 @@ pie title Projected Audience Engagement Distribution
 
 ---
 
-## 🎯 Key Features
+## Key Features
 
-### 1. 📄 Document Upload & Extraction
+### 1. Document Upload & Extraction
 - **Drag-and-Drop & File Picker**: Intuitive interface with visual feedback and format validation.
 - **PDF Text Parsing**: Multi-page PDF text extraction powered by `pdfjs-dist` preserving line breaks, paragraph structure, and formatting.
-- **Optical Character Recognition (OCR)**: High-accuracy OCR engine powered by `tesseract.js` for images (PNG, JPG, WEBP, scanned documents) with real-time stage & percentage progress indicators.
-- **Pre-Loaded Test Samples**: 1-click test posts (SaaS launch, leadership story, scanned flyer, unoptimized draft).
+- **Optical Character Recognition (OCR)**: High-accuracy OCR engine powered by `tesseract.js` for images (PNG, JPG, WEBP, scanned documents) with real-time stage and percentage progress indicators.
+- **Pre-Loaded Test Samples**: One-click test posts (SaaS launch, leadership story, scanned flyer, unoptimized draft).
 
-### 2. 🧠 Content Analysis & Engagement Scoring (0–100)
+### 2. Content Analysis & Engagement Scoring (0-100)
 - **Composite Score Engine**: Evaluates posts across 5 key pillars:
-  - 🪝 **Opening Hook Punchiness** (0–25 pts)
-  - 📖 **Readability & Flesch-Kincaid Ease** (0–20 pts)
-  - 🎯 **Call to Action (CTA) Clarity** (0–20 pts)
-  - 💡 **Tone & Emotional Resonance** (0–20 pts)
-  - 📱 **Visual Layout & Spacing** (0–15 pts)
+  - **Opening Hook Punchiness** (0-25 pts)
+  - **Readability & Flesch-Kincaid Ease** (0-20 pts)
+  - **Call to Action (CTA) Clarity** (0-20 pts)
+  - **Tone & Emotional Resonance** (0-20 pts)
+  - **Visual Layout & Spacing** (0-15 pts)
 - **Tone & Sentiment Profiling**: Detects primary/secondary tone (Thought Leadership, Inspirational, Promotional, Urgent, Conversational) and sentiment valence.
-- **Hook Analysis**: Categorizes hooks (Curiosity Question, Statistical/Data, Bold Claim, Story/Anecdote) and provides viral alternative suggestions.
+- **Hook Analysis**: Categorizes hooks (Curiosity Question, Statistical/Data, Bold Claim, Story/Anecdote) and provides alternative suggestions.
 - **Hashtag Intelligence**: Analyzes existing tag density and generates relevant high-reach hashtags.
 
-### 3. 📊 Social Media Analytics Report (Projected Reach & Donut Chart)
+### 3. Social Media Analytics Report (Projected Reach & Donut Chart)
 - **Projected Engagement**: Reactions, Comments, Shares/Reposts, Post Saves, and Follower Growth.
 - **Key KPIs**: Total Estimated Reach and Predicted Engagement Rate (%).
 - **Interactive Donut Chart**: Visual distribution across reactions, comments, shares, and saves.
 - **Audience Geographies**: Top regions by reach (United States 42%, United Kingdom 28%, Germany 14%, Canada 9%, APAC 7%).
 
-### 4. 📱 Multi-Platform Algorithm Audits & Live Previews
+### 4. Multi-Platform Algorithm Audits & Live Previews
 - **Platform-Specific Optimization**:
-  - **LinkedIn**: 800–1,500 character sweet spot, 3–5 tags, dwell-time boosting spacing.
-  - **Twitter / X**: 280-character limit counter, thread conversion hints, 1–2 tag policy.
+  - **LinkedIn**: 800-1,500 character sweet spot, 3-5 tags, dwell-time boosting spacing.
+  - **Twitter / X**: 280-character limit counter, thread conversion hints, 1-2 tag policy.
   - **Instagram**: First 125-char cutoff check before "...more", visual spacing, hashtag clusters.
   - **Facebook**: Conversational flow and comment drivers.
 - **Realistic Mockup Previews**: Live visual social card simulator with engagement buttons.
 
-### 5. ✍️ A/B Optimization Variants & AI Rewrites
+### 5. A/B Optimization Variants & AI Rewrites
 - Generates 4 tailored rewrite formulas:
   1. **Viral & Punchy Hook** (+45% Reach)
   2. **Thought Leadership & Story** (+60% Dwell Time)
@@ -74,14 +74,26 @@ pie title Projected Audience Engagement Distribution
   4. **Community Discussion Driver** (+80% Comments)
 - **Optional AI Connect**: Zero-backend support for Google Gemini (Free tier) and OpenAI API keys stored strictly in browser local storage.
 
-### 6. 📊 Reporting & UX Polish
+### 6. Reporting & UX Polish
 - **Export Markdown Report**: Complete audit download for sharing with clients and marketing teams.
-- **1-Click Copy & Confetti celebrations** on high-scoring posts.
 - **Responsive Modern Light UI** built with Tailwind CSS, Lucide icons, and Google Fonts.
 
 ---
 
-## 📝 Approach Write-Up (Deliverable 3)
+## Public Datasets & Evaluation Sources
+
+As permitted in the Technical Freedom guidelines, the following public benchmark datasets can be used for testing, validation, and training:
+
+1. **Sentiment140 (Stanford / Kaggle)**: 1.6M social media posts annotated with polarity for sentiment scoring calibration.
+2. **Twitter Virality Dataset (Hugging Face)**: 100K+ public tweets with share and engagement metrics for scoring model verification.
+3. **LinkedIn Viral Posts Benchmark (Kaggle)**: 15K+ posts with dwell-time and reaction ratios for B2B algorithm tuning.
+4. **ICDAR SROIE & PubLayNet**: OCR and structured multi-page PDF layout extraction benchmarks.
+
+*Full dataset references and links are documented in [DATASETS.md](DATASETS.md).*
+
+---
+
+## Approach Write-Up (Deliverable 3)
 
 > **Approach Summary (176 words):**
 >
@@ -89,13 +101,13 @@ pie title Projected Audience Engagement Distribution
 >
 > To satisfy the document processing requirements, we built a client-side extraction pipeline combining **PDF.js** (preserving multi-page layout and paragraph structures) and **Tesseract.js OCR** (extracting text from screenshots, scanned flyers, and visual quotes with real-time progress tracking).
 >
-> For content intelligence, we engineered a multi-dimensional NLP heuristics engine that evaluates drafts across six core dimensions: **Hook Strength**, **Readability (Flesch-Kincaid)**, **Call-to-Action Impact**, **Sentiment/Emotional Resonance**, **Visual Layout**, and **Hashtag Strategy**. The system calculates an aggregate 0–100 Engagement Score, provides an interactive Social Media Analytics Report with audience reach simulations, and provides platform-tailored compliance audits for **LinkedIn, Twitter/X, Instagram, and Facebook** alongside realistic live feed previews.
+> For content intelligence, we engineered a multi-dimensional NLP heuristics engine that evaluates drafts across six core dimensions: **Hook Strength**, **Readability (Flesch-Kincaid)**, **Call-to-Action Impact**, **Sentiment/Emotional Resonance**, **Visual Layout**, and **Hashtag Strategy**. The system calculates an aggregate 0-100 Engagement Score, provides an interactive Social Media Analytics Report with audience reach simulations, and provides platform-tailored compliance audits for **LinkedIn, Twitter/X, Instagram, and Facebook** alongside realistic live feed previews.
 >
 > Additionally, the engine generates four A/B rewrite variations (Viral Hook, Thought Leadership, Scannable Bullets, and Community Driver), with optional zero-backend integration for Google Gemini and OpenAI free-tier APIs. The frontend is built using React, TypeScript, and Tailwind CSS, featuring robust error handling, progress indicators, and one-click markdown report exporting.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Layer | Technology |
 | :--- | :--- |
@@ -105,11 +117,11 @@ pie title Projected Audience Engagement Distribution
 | **OCR Engine** | `tesseract.js` (Client-side worker with progress) |
 | **NLP & Analysis** | Custom rule-based NLP Heuristics Engine + Flesch Formula |
 | **Optional LLM Integration** | Google Gemini 1.5 Flash / OpenAI GPT-4o mini |
-| **Visual Effects & Reports**| `canvas-confetti` + Markdown Blob Generator |
+| **Reports** | Markdown Blob Generator |
 
 ---
 
-## 🚀 Quickstart & Installation
+## Quickstart & Installation
 
 ### Prerequisites
 - Node.js `v18+` or `v20+` or `v24+`
@@ -140,7 +152,7 @@ The compiled and minified assets will be generated in `dist/`.
 
 ---
 
-## 🚢 Deployment Guide
+## Deployment Guide
 
 ### Deploying to Vercel
 1. Push the codebase to your GitHub repository.
@@ -156,12 +168,13 @@ The compiled and minified assets will be generated in `dist/`.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 social-media-content-analyzer/
 ├── APPROACH.md                # 200-word candidate assessment write-up
 ├── ARCHITECTURE.md            # Technical design & math scoring model
+├── DATASETS.md                # Public datasets and test data benchmarks
 ├── SUBMISSION.md              # Email submission template & checklist
 ├── README.md                  # Comprehensive documentation with pie chart
 ├── index.html                 # HTML template with typography
@@ -198,7 +211,7 @@ social-media-content-analyzer/
 
 ---
 
-## 🛡️ Error Handling & Quality Assurance
+## Error Handling & Quality Assurance
 
 - **File Validation**: Immediate rejection of unsupported file types with clear guidance.
 - **Empty / Corrupted Documents**: Informative fallback messages if an uploaded PDF has no text layer or an image has unreadable artifacts.

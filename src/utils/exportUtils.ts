@@ -6,13 +6,13 @@ import type { AnalysisResult } from '../types';
 export function generateMarkdownReport(result: AnalysisResult): string {
   const date = new Date(result.analyzedAt).toLocaleString();
 
-  return `# 📊 Social Media Content Analysis Report
+  return `# Social Media Content Analysis Report
 **Generated on:** ${date}
 **Overall Engagement Score:** ${result.overallScore} / 100
 
 ---
 
-## 🎯 Executive Summary
+## Executive Summary
 - **Primary Tone:** ${result.tone.primary} (${result.tone.confidence}% confidence)
 - **Sentiment:** ${result.sentiment.type} (Score: ${result.sentiment.score.toFixed(2)})
 - **Readability Grade:** ${result.readability.gradeLevel} (Flesch Score: ${result.readability.fleschScore}/100)
@@ -20,18 +20,18 @@ export function generateMarkdownReport(result: AnalysisResult): string {
 
 ---
 
-## 🔍 Score Breakdown
+## Score Breakdown
 | Component | Score | Status |
 | :--- | :--- | :--- |
-| **Opening Hook** | ${result.scoreBreakdown.hook}/100 | ${result.scoreBreakdown.hook >= 75 ? '🟢 Strong' : '🟡 Needs Boost'} |
-| **Clarity & Flow** | ${result.scoreBreakdown.clarity}/100 | ${result.scoreBreakdown.clarity >= 70 ? '🟢 Clear' : '🟡 Dense'} |
-| **Call to Action (CTA)** | ${result.scoreBreakdown.cta}/100 | ${result.callToAction.detected ? '🟢 Detected' : '🔴 Missing'} |
-| **Emotional Resonance** | ${result.scoreBreakdown.emotionalResonance}/100 | 🟢 High |
-| **Visual Formatting** | ${result.scoreBreakdown.formatting}/100 | 🟢 Scannable |
+| **Opening Hook** | ${result.scoreBreakdown.hook}/100 | ${result.scoreBreakdown.hook >= 75 ? 'Strong' : 'Needs Boost'} |
+| **Clarity & Flow** | ${result.scoreBreakdown.clarity}/100 | ${result.scoreBreakdown.clarity >= 70 ? 'Clear' : 'Dense'} |
+| **Call to Action (CTA)** | ${result.scoreBreakdown.cta}/100 | ${result.callToAction.detected ? 'Detected' : 'Missing'} |
+| **Emotional Resonance** | ${result.scoreBreakdown.emotionalResonance}/100 | High |
+| **Visual Formatting** | ${result.scoreBreakdown.formatting}/100 | Scannable |
 
 ---
 
-## 🪝 Hook Analysis
+## Hook Analysis
 - **Detected Hook:** "${result.hookAnalysis.hookText}"
 - **Hook Type:** ${result.hookAnalysis.type}
 - **Evaluation:** ${result.hookAnalysis.critique}
@@ -40,7 +40,7 @@ export function generateMarkdownReport(result: AnalysisResult): string {
 
 ---
 
-## 📱 Multi-Platform Readiness
+## Multi-Platform Readiness
 ### 1. LinkedIn (${result.platformScores.linkedin.score}/100)
 - Character Count: ${result.platformScores.linkedin.characterCount} / ${result.platformScores.linkedin.characterLimit}
 - Recommendations:
@@ -62,7 +62,7 @@ ${result.platformScores.facebook.specificTips.map(t => `  - ${t}`).join('\n')}
 
 ---
 
-## 💡 Top Improvement Recommendations
+## Improvement Recommendations
 ${result.suggestions.map((s, idx) => `### ${idx + 1}. [${s.impact} Impact] ${s.title}
 ${s.description}
 ${s.actionableExample ? `\n> **Example Fix:**\n> ${s.actionableExample}` : ''}
@@ -70,16 +70,16 @@ ${s.actionableExample ? `\n> **Example Fix:**\n> ${s.actionableExample}` : ''}
 
 ---
 
-## 🏷️ Hashtag Strategy
+## Hashtag Strategy
 - **Extracted Tags:** ${result.hashtags.extracted.length > 0 ? result.hashtags.extracted.join(' ') : 'None'}
 - **Recommended High-Impact Tags:** ${result.hashtags.suggested.join(' ')}
 - **Analysis:** ${result.hashtags.analysis}
 
 ---
 
-## ✍️ Generated A/B Optimization Variants
+## Generated A/B Optimization Variants
 
-${result.variants.map(v => `### 📌 ${v.title} (${v.estimatedEngagementBoost})
+${result.variants.map(v => `### ${v.title} (${v.estimatedEngagementBoost})
 *${v.description}*
 
 \`\`\`text
