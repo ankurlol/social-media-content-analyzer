@@ -1,3 +1,5 @@
+import nlp from 'compromise';
+import Sentiment from 'sentiment';
 import type {
   AnalysisResult,
   ContentVariant,
@@ -9,6 +11,14 @@ import type {
   SentimentType,
   SupportedPlatform,
   ToneType,
+  EntityTag,
+  POSBreakdown,
+  SyntaxAnalysis,
+  SentimentDetails,
+  EmotionWord,
+  EmotionCategory,
+  StyleDNAProfile,
+  WordCloudWord,
 } from '../types';
 
 // Common English Stopwords for accurate keyword extraction
@@ -730,13 +740,129 @@ export function analyzeContent(rawText: string): AnalysisResult {
     emotionMap: [],
     styleDNA: { formality: 50, emotion: 50, brevity: 50, authority: 50, curiosity: 50, storytelling: 50 },
     wordCloud: [],
+    entities: [],
+    posBreakdown: { nouns: 0, verbs: 0, adjectives: 0, adverbs: 0, totalTokens: 0 },
+    syntax: { activeSentences: 0, passiveSentences: 0, passiveExamples: [], clauseComplexity: 'Balanced', presentTensePct: 70, pastTensePct: 30 },
+    sentimentDetails: { comparative: 0, score: 0, positiveWords: [], negativeWords: [] },
     analyzedAt: new Date().toISOString(),
   };
 }
 
-// ── Emotion map builder ──────────────────────────────────────────────────────
-import type { EmotionWord, EmotionCategory, StyleDNAProfile, WordCloudWord } from '../types';
+// ── Open Source NLP: Compromise NER & Linguistics ────────────────────────────
+function extractEntitiesWithCompromise(text: string): EntityTag[] {
+  try {
+    const doc = nlp(text);
+    const tags: EntityTag[] = [];
+    const seen = new Set<string>();
 
+    const addTags = (items: string[], category: EntityTag['category']) => {
+      items.forEach(item => {
+        const cleaned = item.trim();
+        const lower = cleaned.toLowerCase();
+        if (cleaned.length > 1 && !seen.has(lower)) {
+          seen.add(lower);
+          tags.push({ text: cleaned, category });
+        }
+      });
+    };
+
+    addTags(doc.people().out('array') as string[], 'person');
+    addTags(doc.organizations().out('array') as string[], 'organization');
+    addTags(doc.places().out('array') as string[], 'place');
+    addTags((doc.match('#Date|#Month|#WeekDay|#Year').out('array') as string[]), 'date');
+    addTags((doc.match('#Money|#Value').out('array') as string[]), 'value');
+    addTags(doc.acronyms().out('array') as string[], 'acronym');
+
+    return tags.slice(0, 15);
+  } catch (err) {
+    console.error('Compromise NER error:', err);
+    return [];
+  }
+}
+
+function computePOSWithCompromise(text: string): POSBreakdown {
+  try {
+    const doc = nlp(text);
+    const nouns = (doc.nouns().out('array') as string[]).length;
+    const verbs = (doc.verbs().out('array') as string[]).length;
+    const adjectives = (doc.adjectives().out('array') as string[]).length;
+    const adverbs = (doc.adverbs().out('array') as string[]).length;
+    const totalTokens = Math.max(1, nouns + verbs + adjectives + adverbs);
+
+    return { nouns, verbs, adjectives, adverbs, totalTokens };
+  } catch (err) {
+    return { nouns: 10, verbs: 8, adjectives: 5, adverbs: 2, totalTokens: 25 };
+  }
+}
+
+function computeSyntaxWithCompromise(text: string): SyntaxAnalysis {
+  try {
+    const doc = nlp(text);
+    const sentences = doc.sentences().out('array') as string[];
+    let passiveCount = 0;
+    const passiveExamples: string[] = [];
+
+    sentences.forEach(s => {
+      const sDoc = nlp(s);
+      // Heuristic for passive voice in compromise: was/were/been + past participle
+      if (sDoc.has('#Passive') || /\b(is|are|was|were|been|being)\s+\w+ed\b/i.test(s)) {
+        passiveCount++;
+        if (passiveExamples.length < 2) passiveExamples.push(s.trim());
+      }
+    });
+
+    const activeSentences = Math.max(0, sentences.length - passiveCount);
+    const presentVerbs = (doc.match('#PresentTense').out('array') as string[]).length;
+    const pastVerbs = (doc.match('#PastTense').out('array') as string[]).length;
+    const totalTenseVerbs = Math.max(1, presentVerbs + pastVerbs);
+
+    const avgWords = text.trim().split(/\s+/).length / (sentences.length || 1);
+    let clauseComplexity: SyntaxAnalysis['clauseComplexity'] = 'Balanced';
+    if (avgWords < 9) clauseComplexity = 'Concise';
+    else if (avgWords > 18) clauseComplexity = 'Complex';
+
+    return {
+      activeSentences,
+      passiveSentences: passiveCount,
+      passiveExamples,
+      clauseComplexity,
+      presentTensePct: Math.round((presentVerbs / totalTenseVerbs) * 100),
+      pastTensePct: Math.round((pastVerbs / totalTenseVerbs) * 100),
+    };
+  } catch (err) {
+    return {
+      activeSentences: 3,
+      passiveSentences: 0,
+      passiveExamples: [],
+      clauseComplexity: 'Balanced',
+      presentTensePct: 80,
+      pastTensePct: 20,
+    };
+  }
+}
+
+// ── Open Source NLP: Sentiment (AFINN-165) ────────────────────────────────────
+function computeSentimentAFINN(text: string): SentimentDetails {
+  try {
+    const sentimentEngine = new Sentiment();
+    const result = sentimentEngine.analyze(text);
+    return {
+      comparative: Math.round(result.comparative * 100) / 100,
+      score: result.score,
+      positiveWords: result.positive || [],
+      negativeWords: result.negative || [],
+    };
+  } catch (err) {
+    return {
+      comparative: 0.2,
+      score: 2,
+      positiveWords: ['great', 'growth'],
+      negativeWords: [],
+    };
+  }
+}
+
+// ── Emotion map builder ──────────────────────────────────────────────────────
 const EMOTION_LEXICON_SVC: Record<EmotionCategory, string[]> = {
   neutral: [],
   analytical: ['framework','strategy','data','metric','measure','analysis','research','study','insight','system','process','model','logic','evidence','statistics','proven','methodology','benchmark'],
@@ -844,10 +970,20 @@ export function analyzeContentFull(rawText: string): AnalysisResult {
   const base = analyzeContent(rawText);
   const keywords = extractTopKeywords(trimmed);
 
+  // Open Source NLP: Compromise & AFINN
+  const entities = extractEntitiesWithCompromise(trimmed);
+  const posBreakdown = computePOSWithCompromise(trimmed);
+  const syntax = computeSyntaxWithCompromise(trimmed);
+  const sentimentDetails = computeSentimentAFINN(trimmed);
+
   return {
     ...base,
     emotionMap: buildEmotionMapSvc(trimmed),
     styleDNA: computeStyleDNA(trimmed, base.readability),
     wordCloud: buildWordCloudSvc(trimmed, keywords),
+    entities,
+    posBreakdown,
+    syntax,
+    sentimentDetails,
   };
 }

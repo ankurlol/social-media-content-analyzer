@@ -12,6 +12,7 @@ import { EmotionHeatmap } from './components/EmotionHeatmap';
 import { StyleDNA } from './components/StyleDNA';
 import { GoldenHourScheduler } from './components/GoldenHourScheduler';
 import { ViralWordCloud } from './components/ViralWordCloud';
+import { NLPEntityInspector } from './components/NLPEntityInspector';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { SampleDataModal } from './components/SampleDataModal';
 import { analyzeContentFull } from './services/analyzerService';
@@ -34,10 +35,12 @@ import {
   Activity,
   Calendar,
   Sparkles,
+  Cpu,
 } from 'lucide-react';
 
 type ActiveTab =
   | 'analytics'
+  | 'linguistics'
   | 'emotion'
   | 'dna'
   | 'schedule'
@@ -149,11 +152,12 @@ export const App: React.FC = () => {
 
   const tabs: { id: ActiveTab; label: string; icon: React.ElementType; color: string; badge?: string | number }[] = [
     { id: 'analytics', label: 'Analytics Report', icon: PieChart, color: 'text-indigo-400' },
+    { id: 'linguistics', label: 'Linguistics & NER', icon: Cpu, color: 'text-cyan-400', badge: 'Compromise' },
     { id: 'emotion', label: 'Emotion Heatmap', icon: Flame, color: 'text-pink-400', badge: 'Unique' },
     { id: 'dna', label: 'Style DNA Radar', icon: Activity, color: 'text-purple-400', badge: 'Unique' },
-    { id: 'schedule', label: 'Golden Hour', icon: Calendar, color: 'text-cyan-400', badge: 'Unique' },
+    { id: 'schedule', label: 'Golden Hour', icon: Calendar, color: 'text-sky-400', badge: 'Unique' },
     { id: 'wordcloud', label: 'Viral Word Cloud', icon: Sparkles, color: 'text-amber-400', badge: 'Unique' },
-    { id: 'platforms', label: 'Platform Simulator', icon: LayoutGrid, color: 'text-sky-400' },
+    { id: 'platforms', label: 'Platform Simulator', icon: LayoutGrid, color: 'text-blue-400' },
     { id: 'variants', label: 'A/B Rewrite Variants', icon: Wand2, color: 'text-rose-400', badge: 4 },
     { id: 'deepdive', label: 'Hook & CTA Metrics', icon: Compass, color: 'text-teal-400' },
     { id: 'suggestions', label: 'Action Checklist', icon: CheckCircle2, color: 'text-emerald-400', badge: analysisResult?.suggestions.length },
@@ -183,7 +187,7 @@ export const App: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Multi-modal document extraction, emotion heatmapping, style radar & algorithmic reach forecasting.
+              Open-source NLP (Compromise & AFINN), Named Entity Recognition, emotion heatmapping & reach forecasting.
             </p>
           </div>
         </div>
@@ -235,7 +239,9 @@ export const App: React.FC = () => {
                     {t.badge !== undefined && (
                       <span
                         className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
-                          t.badge === 'Unique'
+                          t.badge === 'Compromise'
+                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                            : t.badge === 'Unique'
                             ? 'bg-gradient-to-r from-indigo-500 to-pink-500 text-white'
                             : 'bg-white/[0.1] text-slate-300'
                         }`}
@@ -252,6 +258,18 @@ export const App: React.FC = () => {
             <div className="pt-1 animate-fadeIn">
               {activeTab === 'analytics' && (
                 <AnalyticsReportCard analytics={analysisResult.analytics} />
+              )}
+
+              {activeTab === 'linguistics' && (
+                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                  <NLPEntityInspector
+                    entities={analysisResult.entities}
+                    posBreakdown={analysisResult.posBreakdown}
+                    syntax={analysisResult.syntax}
+                    sentimentDetails={analysisResult.sentimentDetails}
+                    rawText={text}
+                  />
+                </div>
               )}
 
               {activeTab === 'emotion' && (

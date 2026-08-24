@@ -48,6 +48,39 @@ export interface WordCloudWord {
   category: 'hook' | 'topic' | 'action' | 'emotion' | 'generic';
 }
 
+// Open-Source NLP: Named Entity Recognition (NER)
+export interface EntityTag {
+  text: string;
+  category: 'person' | 'organization' | 'place' | 'date' | 'value' | 'acronym';
+}
+
+// Open-Source NLP: Part-of-Speech (POS) Distribution
+export interface POSBreakdown {
+  nouns: number;
+  verbs: number;
+  adjectives: number;
+  adverbs: number;
+  totalTokens: number;
+}
+
+// Open-Source NLP: Syntax & Grammar Voice Analysis
+export interface SyntaxAnalysis {
+  activeSentences: number;
+  passiveSentences: number;
+  passiveExamples: string[];
+  clauseComplexity: 'Concise' | 'Balanced' | 'Complex';
+  presentTensePct: number;
+  pastTensePct: number;
+}
+
+// Open-Source NLP: AFINN-165 Sentiment Details
+export interface SentimentDetails {
+  comparative: number;
+  score: number;
+  positiveWords: string[];
+  negativeWords: string[];
+}
+
 export interface ReadabilityMetrics {
   fleschScore: number;
   gradeLevel: string;
@@ -146,10 +179,14 @@ export interface AnalysisResult {
   suggestions: ImprovementSuggestion[];
   variants: ContentVariant[];
   analytics: ProjectedAnalytics;
-  // NEW: Differentiating features
+  // Differentiating & Open Source NLP features
   emotionMap: EmotionWord[];
   styleDNA: StyleDNAProfile;
   wordCloud: WordCloudWord[];
+  entities: EntityTag[];
+  posBreakdown: POSBreakdown;
+  syntax: SyntaxAnalysis;
+  sentimentDetails: SentimentDetails;
   analyzedAt: string;
 }
 
