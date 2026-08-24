@@ -1,13 +1,13 @@
-/* Dark Obsidian Theme */
+/* Dark Obsidian Theme - SaaS Benchmark */
 @import "tailwindcss";
 
 :root {
-  --bg-base: #0a0a0f;
-  --bg-surface: #13131a;
-  --bg-card: #16161f;
-  --border-subtle: #1e1e2e;
-  --border-bright: #2d2d40;
-  --text-primary: #f1f5f9;
+  --bg-base: #08080c;
+  --bg-surface: #0f0f17;
+  --bg-card: #13131e;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-bright: rgba(255, 255, 255, 0.12);
+  --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #475569;
   --accent-indigo: #6366f1;
@@ -25,102 +25,73 @@ html, body {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+    radial-gradient(at 85% 25%, rgba(236, 72, 153, 0.06) 0px, transparent 50%),
+    radial-gradient(at 50% 85%, rgba(34, 211, 238, 0.05) 0px, transparent 60%);
+  background-attachment: fixed;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-surface);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-bright);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d3d56;
+  background: rgba(255, 255, 255, 0.22);
 }
 
-/* Fade in animation */
+/* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(5px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .animate-fadeIn {
-  animation: fadeIn 0.25s ease-out both;
+  animation: fadeIn 0.22s ease-out both;
 }
 
-/* Glow pulse animation */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(99,102,241,0.4); }
-  50%       { box-shadow: 0 0 20px rgba(99,102,241,0.7); }
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.8; }
 }
-.glow-pulse {
-  animation: glowPulse 2s ease-in-out infinite;
-}
-
-/* Score ring animation */
-@keyframes ringDraw {
-  from { stroke-dashoffset: 251; }
-  to   { stroke-dashoffset: var(--ring-offset); }
-}
-.ring-animate {
-  animation: ringDraw 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+.pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
 }
 
-/* Shimmer loading */
-@keyframes shimmer {
-  from { background-position: -200% 0; }
-  to   { background-position: 200% 0; }
-}
-.shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgba(99,102,241,0.1) 50%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Glassmorphism utility */
+/* Glassmorphism token */
 .glass {
-  background: rgba(22, 22, 31, 0.7);
+  background: rgba(18, 18, 28, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Gradient border card */
-.gradient-border {
-  position: relative;
-  background: var(--bg-card);
-  border-radius: 1rem;
-}
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(99,102,241,0.4), rgba(236,72,153,0.4), rgba(34,211,238,0.2));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-/* Neon text */
-.neon-text {
-  text-shadow:
-    0 0 7px rgba(99,102,241,0.8),
-    0 0 14px rgba(99,102,241,0.5);
+/* Interactive neon glow hover */
+.glow-card-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* Tab pill active */
-.tab-active {
-  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.15));
-  border-color: rgba(99,102,241,0.5) !important;
-  color: #a5b4fc !important;
+.glow-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.18);
 }

@@ -36,18 +36,22 @@ import {
   Calendar,
   Sparkles,
   Cpu,
+  BarChart2,
+  Zap,
 } from 'lucide-react';
+
+type ActiveCategory = 'performance' | 'linguistics' | 'growth';
 
 type ActiveTab =
   | 'analytics'
+  | 'platforms'
+  | 'deepdive'
   | 'linguistics'
   | 'emotion'
   | 'dna'
+  | 'variants'
   | 'schedule'
   | 'wordcloud'
-  | 'platforms'
-  | 'variants'
-  | 'deepdive'
   | 'suggestions';
 
 export const App: React.FC = () => {
@@ -55,6 +59,8 @@ export const App: React.FC = () => {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [isGeneratingAI, setIsGeneratingAI] = useState<boolean>(false);
+  
+  const [activeCategory, setActiveCategory] = useState<ActiveCategory>('performance');
   const [activeTab, setActiveTab] = useState<ActiveTab>('analytics');
 
   const [processingState, setProcessingState] = useState<ProcessingState>({
@@ -150,21 +156,70 @@ export const App: React.FC = () => {
     }
   };
 
-  const tabs: { id: ActiveTab; label: string; icon: React.ElementType; color: string; badge?: string | number }[] = [
-    { id: 'analytics', label: 'Analytics Report', icon: PieChart, color: 'text-indigo-400' },
-    { id: 'linguistics', label: 'Linguistics & NER', icon: Cpu, color: 'text-cyan-400', badge: 'Compromise' },
-    { id: 'emotion', label: 'Emotion Heatmap', icon: Flame, color: 'text-pink-400', badge: 'Unique' },
-    { id: 'dna', label: 'Style DNA Radar', icon: Activity, color: 'text-purple-400', badge: 'Unique' },
-    { id: 'schedule', label: 'Golden Hour', icon: Calendar, color: 'text-sky-400', badge: 'Unique' },
-    { id: 'wordcloud', label: 'Viral Word Cloud', icon: Sparkles, color: 'text-amber-400', badge: 'Unique' },
-    { id: 'platforms', label: 'Platform Simulator', icon: LayoutGrid, color: 'text-blue-400' },
-    { id: 'variants', label: 'A/B Rewrite Variants', icon: Wand2, color: 'text-rose-400', badge: 4 },
-    { id: 'deepdive', label: 'Hook & CTA Metrics', icon: Compass, color: 'text-teal-400' },
-    { id: 'suggestions', label: 'Action Checklist', icon: CheckCircle2, color: 'text-emerald-400', badge: analysisResult?.suggestions.length },
+  interface CategoryTabItem {
+    id: ActiveTab;
+    label: string;
+    icon: React.ElementType;
+    color: string;
+    badge?: string | number;
+  }
+
+  interface CategoryHubItem {
+    id: ActiveCategory;
+    label: string;
+    icon: React.ElementType;
+    tabs: CategoryTabItem[];
+  }
+
+  const CATEGORIES: CategoryHubItem[] = [
+    {
+      id: 'performance',
+      label: 'Performance & Analytics',
+      icon: BarChart2,
+      tabs: [
+        { id: 'analytics', label: 'Sprout / Metricool Analytics', icon: PieChart, color: 'text-indigo-400' },
+        { id: 'platforms', label: 'Feed Simulator', icon: LayoutGrid, color: 'text-sky-400' },
+        { id: 'deepdive', label: 'Hook & CTA Metrics', icon: Compass, color: 'text-teal-400' },
+      ],
+    },
+    {
+      id: 'linguistics',
+      label: 'Computational Linguistics',
+      icon: Cpu,
+      tabs: [
+        { id: 'linguistics', label: 'NER & Syntax Inspector', icon: Cpu, color: 'text-cyan-400', badge: 'Compromise' },
+        { id: 'emotion', label: 'Emotion Heatmap', icon: Flame, color: 'text-pink-400', badge: 'Unique' },
+        { id: 'dna', label: 'Style DNA Radar', icon: Activity, color: 'text-purple-400', badge: 'Unique' },
+      ],
+    },
+    {
+      id: 'growth',
+      label: 'Growth & Optimization',
+      icon: Zap,
+      tabs: [
+        { id: 'variants', label: 'A/B Rewrite Formulas', icon: Wand2, color: 'text-rose-400', badge: 4 },
+        { id: 'schedule', label: 'Golden Hour Grid', icon: Calendar, color: 'text-cyan-400', badge: 'Unique' },
+        { id: 'wordcloud', label: 'Viral Word Cloud', icon: Sparkles, color: 'text-amber-400', badge: 'Unique' },
+        { id: 'suggestions', label: 'Action Checklist', icon: CheckCircle2, color: 'text-emerald-400', badge: analysisResult?.suggestions.length },
+      ],
+    },
   ];
 
+  const currentCategoryObj = CATEGORIES.find(c => c.id === activeCategory)!;
+
+  const handleCategorySelect = (catId: ActiveCategory) => {
+    setActiveCategory(catId);
+    const cat = CATEGORIES.find(c => c.id === catId)!;
+    setActiveTab(cat.tabs[0].id);
+  };
+
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-slate-100 flex flex-col font-sans selection:bg-pink-500 selection:text-white">
+    <div className="min-h-screen bg-[#08080c] text-slate-100 flex flex-col font-sans selection:bg-pink-500 selection:text-white relative">
+      {/* Ambient background glow orbs */}
+      <div className="fixed top-20 left-10 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed top-40 right-10 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed bottom-20 left-1/3 w-96 h-96 bg-cyan-600/5 rounded-full blur-3xl pointer-events-none" />
+
       {/* Top Navbar */}
       <Navbar
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
@@ -174,20 +229,20 @@ export const App: React.FC = () => {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
-        {/* Header */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6 relative z-10">
+        {/* Header Title */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
                 Social Media Content Intelligence Suite
               </h1>
-              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-indigo-500/20 to-pink-500/20 border border-indigo-500/30 text-indigo-300">
-                PRO
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-indigo-500/30 text-indigo-300 shadow-sm">
+                TIER-1 PRO
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Open-source NLP (Compromise & AFINN), Named Entity Recognition, emotion heatmapping & reach forecasting.
+              Open-source NLP (Compromise & AFINN), Metricool-style timeline analytics & multi-platform synthesis.
             </p>
           </div>
         </div>
@@ -215,43 +270,68 @@ export const App: React.FC = () => {
 
         {/* Results Area */}
         {analysisResult && (
-          <div className="space-y-4 pt-1">
+          <div className="space-y-5 pt-1">
             {/* Top Score Summary Strip */}
             <OverviewDashboard result={analysisResult} />
 
-            {/* Tab Navigation */}
-            <div className="flex items-center gap-1.5 border-b border-white/[0.06] pb-2 overflow-x-auto scrollbar-thin">
-              {tabs.map((t) => {
-                const Icon = t.icon;
-                const isActive = activeTab === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    onClick={() => setActiveTab(t.id)}
-                    className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap border ${
-                      isActive
-                        ? 'bg-white/[0.08] text-white border-white/[0.15] shadow-lg shadow-indigo-500/10'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border-transparent'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${t.color}`} />
-                    <span>{t.label}</span>
-                    {t.badge !== undefined && (
-                      <span
-                        className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
-                          t.badge === 'Compromise'
-                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                            : t.badge === 'Unique'
-                            ? 'bg-gradient-to-r from-indigo-500 to-pink-500 text-white'
-                            : 'bg-white/[0.1] text-slate-300'
-                        }`}
-                      >
-                        {t.badge}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+            {/* Categorized Hub Navigation Controller */}
+            <div className="space-y-3">
+              {/* Category Segmented Pill Bar */}
+              <div className="flex items-center gap-2 p-1.5 bg-black/50 border border-white/[0.08] rounded-2xl w-fit">
+                {CATEGORIES.map((cat) => {
+                  const Icon = cat.icon;
+                  const isCatActive = activeCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => handleCategorySelect(cat.id)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                        isCatActive
+                          ? 'bg-gradient-to-r from-indigo-600/30 to-pink-600/30 border border-indigo-500/50 text-white shadow-lg shadow-indigo-500/10'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border border-transparent'
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>{cat.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sub-Tabs Row for the Selected Category */}
+              <div className="flex items-center gap-1.5 border-b border-white/[0.06] pb-2 overflow-x-auto scrollbar-thin">
+                {currentCategoryObj.tabs.map((t) => {
+                  const Icon = t.icon;
+                  const isActive = activeTab === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => setActiveTab(t.id)}
+                      className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap border ${
+                        isActive
+                          ? 'bg-white/[0.08] text-white border-white/[0.15] shadow-md'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03] border-transparent'
+                      }`}
+                    >
+                      <Icon className={`w-3.5 h-3.5 ${t.color}`} />
+                      <span>{t.label}</span>
+                      {t.badge !== undefined && (
+                        <span
+                          className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                            t.badge === 'Compromise'
+                              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                              : t.badge === 'Unique'
+                              ? 'bg-gradient-to-r from-indigo-500 to-pink-500 text-white'
+                              : 'bg-white/[0.1] text-slate-300'
+                          }`}
+                        >
+                          {t.badge}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Active Tab Panel */}
@@ -260,8 +340,19 @@ export const App: React.FC = () => {
                 <AnalyticsReportCard analytics={analysisResult.analytics} />
               )}
 
+              {activeTab === 'platforms' && (
+                <PlatformOptimizer
+                  platformScores={analysisResult.platformScores}
+                  postText={text}
+                />
+              )}
+
+              {activeTab === 'deepdive' && (
+                <DeepDiveMetrics result={analysisResult} />
+              )}
+
               {activeTab === 'linguistics' && (
-                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                <div className="glass rounded-3xl border border-white/[0.08] p-6 shadow-2xl">
                   <NLPEntityInspector
                     entities={analysisResult.entities}
                     posBreakdown={analysisResult.posBreakdown}
@@ -273,34 +364,15 @@ export const App: React.FC = () => {
               )}
 
               {activeTab === 'emotion' && (
-                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                <div className="glass rounded-3xl border border-white/[0.08] p-6 shadow-2xl">
                   <EmotionHeatmap emotionMap={analysisResult.emotionMap} text={text} />
                 </div>
               )}
 
               {activeTab === 'dna' && (
-                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
+                <div className="glass rounded-3xl border border-white/[0.08] p-6 shadow-2xl">
                   <StyleDNA profile={analysisResult.styleDNA} />
                 </div>
-              )}
-
-              {activeTab === 'schedule' && (
-                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
-                  <GoldenHourScheduler />
-                </div>
-              )}
-
-              {activeTab === 'wordcloud' && (
-                <div className="glass rounded-2xl border border-white/[0.06] p-6 shadow-xl shadow-black/30">
-                  <ViralWordCloud words={analysisResult.wordCloud} />
-                </div>
-              )}
-
-              {activeTab === 'platforms' && (
-                <PlatformOptimizer
-                  platformScores={analysisResult.platformScores}
-                  postText={text}
-                />
               )}
 
               {activeTab === 'variants' && (
@@ -317,8 +389,16 @@ export const App: React.FC = () => {
                 />
               )}
 
-              {activeTab === 'deepdive' && (
-                <DeepDiveMetrics result={analysisResult} />
+              {activeTab === 'schedule' && (
+                <div className="glass rounded-3xl border border-white/[0.08] p-6 shadow-2xl">
+                  <GoldenHourScheduler />
+                </div>
+              )}
+
+              {activeTab === 'wordcloud' && (
+                <div className="glass rounded-3xl border border-white/[0.08] p-6 shadow-2xl">
+                  <ViralWordCloud words={analysisResult.wordCloud} />
+                </div>
               )}
 
               {activeTab === 'suggestions' && (
