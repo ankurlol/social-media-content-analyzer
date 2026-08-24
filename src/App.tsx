@@ -15,6 +15,7 @@ import { ViralWordCloud } from './components/ViralWordCloud';
 import { NLPEntityInspector } from './components/NLPEntityInspector';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { SampleDataModal } from './components/SampleDataModal';
+import { AuthModal } from './components/AuthModal';
 import { analyzeContentFull } from './services/analyzerService';
 import {
   generateAIEnhancements,
@@ -22,6 +23,11 @@ import {
   saveAISettings,
   type AISettings,
 } from './services/aiService';
+import {
+  getStoredUser,
+  signOutUser,
+  type UserAccount,
+} from './services/authService';
 import type { AnalysisResult, ExtractedDocument, ProcessingState } from './types';
 import { SAMPLE_POSTS, type SamplePostItem } from './utils/samplePosts';
 import confetti from 'canvas-confetti';
@@ -71,8 +77,10 @@ export const App: React.FC = () => {
   });
 
   const [aiSettings, setAiSettings] = useState<AISettings>(getStoredAISettings());
+  const [user, setUser] = useState<UserAccount | null>(getStoredUser());
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState<boolean>(false);
   const [isSampleModalOpen, setIsSampleModalOpen] = useState<boolean>(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   const debounceTimerRef = useRef<number | null>(null);
 
@@ -128,6 +136,11 @@ export const App: React.FC = () => {
   const handleSaveAISettings = (newSettings: AISettings) => {
     setAiSettings(newSettings);
     saveAISettings(newSettings);
+  };
+
+  const handleSignOut = () => {
+    signOutUser();
+    setUser(null);
   };
 
   // Trigger AI variant generation
@@ -224,8 +237,11 @@ export const App: React.FC = () => {
       <Navbar
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
         onOpenSampleModal={() => setIsSampleModalOpen(true)}
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
         hasApiKey={!!aiSettings.apiKey}
         analysisResult={analysisResult}
+        user={user}
+        onSignOut={handleSignOut}
       />
 
       {/* Main Container */}
@@ -424,6 +440,12 @@ export const App: React.FC = () => {
         isOpen={isSampleModalOpen}
         onClose={() => setIsSampleModalOpen(false)}
         onSelectSample={handleSelectSample}
+      />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={(newUser) => setUser(newUser)}
       />
     </div>
   );
