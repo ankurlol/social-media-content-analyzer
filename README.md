@@ -29,7 +29,13 @@ A modern, production-ready web application that extracts text from **PDF documen
 - **Hook Analysis**: Categorizes hooks (Curiosity Question, Statistical/Data, Bold Claim, Story/Anecdote) and provides viral alternative suggestions.
 - **Hashtag Intelligence**: Analyzes existing tag density and generates relevant high-reach hashtags.
 
-### 3. 📱 Multi-Platform Algorithm Audits & Live Previews
+### 3. 📊 Social Media Analytics Report (Projected Reach & Donut Chart)
+- **Projected Engagement**: Reactions, Comments, Shares/Reposts, Post Saves, and Follower Growth.
+- **Key KPIs**: Total Estimated Reach and Predicted Engagement Rate (%).
+- **Interactive Donut Chart**: Visual distribution across reactions, comments, shares, and saves.
+- **Audience Geographies**: Top regions by reach (United States, United Kingdom, Germany, Canada, APAC).
+
+### 4. 📱 Multi-Platform Algorithm Audits & Live Previews
 - **Platform-Specific Optimization**:
   - **LinkedIn**: 800–1,500 character sweet spot, 3–5 tags, dwell-time boosting spacing.
   - **Twitter / X**: 280-character limit counter, thread conversion hints, 1–2 tag policy.
@@ -37,7 +43,7 @@ A modern, production-ready web application that extracts text from **PDF documen
   - **Facebook**: Conversational flow and comment drivers.
 - **Realistic Mockup Previews**: Live visual social card simulator with engagement buttons.
 
-### 4. ✍️ A/B Optimization Variants & AI Rewrites
+### 5. ✍️ A/B Optimization Variants & AI Rewrites
 - Generates 4 tailored rewrite formulas:
   1. **Viral & Punchy Hook** (+45% Reach)
   2. **Thought Leadership & Story** (+60% Dwell Time)
@@ -45,10 +51,10 @@ A modern, production-ready web application that extracts text from **PDF documen
   4. **Community Discussion Driver** (+80% Comments)
 - **Optional AI Connect**: Zero-backend support for Google Gemini (Free tier) and OpenAI API keys stored strictly in browser local storage.
 
-### 5. 📊 Reporting & UX Polish
+### 6. 📊 Reporting & UX Polish
 - **Export Markdown Report**: Complete audit download for sharing with clients and marketing teams.
 - **1-Click Copy & Confetti celebrations** on high-scoring posts.
-- **Responsive Dark-Themed UI** built with Tailwind CSS and Lucide icons.
+- **Responsive Modern Light UI** built with Tailwind CSS, Lucide icons, and Google Fonts.
 
 ---
 
@@ -60,7 +66,7 @@ A modern, production-ready web application that extracts text from **PDF documen
 >
 > To satisfy the document processing requirements, we built a client-side extraction pipeline combining **PDF.js** (preserving multi-page layout and paragraph structures) and **Tesseract.js OCR** (extracting text from screenshots, scanned flyers, and visual quotes with real-time progress tracking).
 >
-> For content intelligence, we engineered a multi-dimensional NLP heuristics engine that evaluates drafts across six core dimensions: **Hook Strength**, **Readability (Flesch-Kincaid)**, **Call-to-Action Impact**, **Sentiment/Emotional Resonance**, **Visual Layout**, and **Hashtag Strategy**. The system calculates an aggregate 0–100 Engagement Score and provides platform-tailored compliance audits for **LinkedIn, Twitter/X, Instagram, and Facebook** alongside realistic live feed previews.
+> For content intelligence, we engineered a multi-dimensional NLP heuristics engine that evaluates drafts across six core dimensions: **Hook Strength**, **Readability (Flesch-Kincaid)**, **Call-to-Action Impact**, **Sentiment/Emotional Resonance**, **Visual Layout**, and **Hashtag Strategy**. The system calculates an aggregate 0–100 Engagement Score, provides an interactive Social Media Analytics Report with audience reach simulations, and provides platform-tailored compliance audits for **LinkedIn, Twitter/X, Instagram, and Facebook** alongside realistic live feed previews.
 >
 > Additionally, the engine generates four A/B rewrite variations (Viral Hook, Thought Leadership, Scannable Bullets, and Community Driver), with optional zero-backend integration for Google Gemini and OpenAI free-tier APIs. The frontend is built using React, TypeScript, and Tailwind CSS, featuring robust error handling, progress indicators, and one-click markdown report exporting.
 
@@ -87,25 +93,26 @@ A modern, production-ready web application that extracts text from **PDF documen
 - npm `v9+` or `v11+`
 
 ### 1. Clone or Open the Repository
-\`\`\`bash
+```bash
+git clone https://github.com/ankurlol/social-media-content-analyzer.git
 cd social-media-content-analyzer
-\`\`\`
+```
 
 ### 2. Install Dependencies
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 ### 3. Run Development Server
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ### 4. Build for Production
-\`\`\`bash
+```bash
 npm run build
-\`\`\`
+```
 The compiled and minified assets will be generated in `dist/`.
 
 ---
@@ -128,9 +135,11 @@ The compiled and minified assets will be generated in `dist/`.
 
 ## 📂 Project Structure
 
-\`\`\`
+```text
 social-media-content-analyzer/
 ├── APPROACH.md                # 200-word candidate assessment write-up
+├── ARCHITECTURE.md            # Technical design & math scoring model
+├── SUBMISSION.md              # Email submission template & checklist
 ├── README.md                  # Comprehensive documentation
 ├── index.html                 # HTML template with typography
 ├── package.json               # Dependencies and build scripts
@@ -152,6 +161,7 @@ social-media-content-analyzer/
     │   ├── DocumentUploader.tsx # Drag & Drop PDF and OCR upload zone
     │   ├── LiveEditor.tsx     # Post draft editor & character counter
     │   ├── OverviewDashboard.tsx # Score gauge & engagement breakdown
+    │   ├── AnalyticsReportCard.tsx # Projected reach & donut chart
     │   ├── PlatformOptimizer.tsx # Feed previews & platform checks
     │   ├── DeepDiveMetrics.tsx# Hook, CTA, Readability & Hashtag cards
     │   ├── ImprovementSuggestions.tsx # Actionable roadmap
@@ -161,7 +171,7 @@ social-media-content-analyzer/
     └── utils/
         ├── exportUtils.ts     # Markdown report generation
         └── samplePosts.ts     # Built-in demo posts & scenarios
-\`\`\`
+```
 
 ---
 
