@@ -13,6 +13,7 @@ import { StyleDNA } from './components/StyleDNA';
 import { GoldenHourScheduler } from './components/GoldenHourScheduler';
 import { ViralWordCloud } from './components/ViralWordCloud';
 import { NLPEntityInspector } from './components/NLPEntityInspector';
+import { Dynamic3DHeroCard } from './components/Dynamic3DHeroCard';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { SampleDataModal } from './components/SampleDataModal';
 import { AuthModal } from './components/AuthModal';
@@ -44,12 +45,14 @@ import {
   Cpu,
   BarChart2,
   Zap,
+  Globe2,
 } from 'lucide-react';
 
 type ActiveCategory = 'performance' | 'linguistics' | 'growth';
 
 type ActiveTab =
   | 'analytics'
+  | '3d-topology'
   | 'platforms'
   | 'deepdive'
   | 'linguistics'
@@ -191,6 +194,7 @@ export const App: React.FC = () => {
       icon: BarChart2,
       tabs: [
         { id: 'analytics', label: 'Sprout / Metricool Analytics', icon: PieChart, color: 'text-indigo-400' },
+        { id: '3d-topology', label: '3D Audience Lattice', icon: Globe2, color: 'text-cyan-400', badge: 'Three.js 3D' },
         { id: 'platforms', label: 'Feed Simulator', icon: LayoutGrid, color: 'text-sky-400' },
         { id: 'deepdive', label: 'Hook & CTA Metrics', icon: Compass, color: 'text-teal-400' },
       ],
@@ -227,8 +231,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#08080c] text-slate-100 flex flex-col font-sans selection:bg-pink-500 selection:text-white relative">
-      {/* Ambient background glow orbs */}
+    <div className="min-h-screen bg-[#07070b] text-slate-100 flex flex-col font-sans selection:bg-pink-500 selection:text-white relative">
+      {/* Dynamic ambient background glow orbs */}
       <div className="fixed top-20 left-10 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed top-40 right-10 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed bottom-20 left-1/3 w-96 h-96 bg-cyan-600/5 rounded-full blur-3xl pointer-events-none" />
@@ -254,11 +258,11 @@ export const App: React.FC = () => {
                 Social Media Content Intelligence Suite
               </h1>
               <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-indigo-500/30 text-indigo-300 shadow-sm">
-                TIER-1 PRO
+                3D WEBGL PRO
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Open-source NLP (Compromise & AFINN), Metricool-style timeline analytics & multi-platform synthesis.
+              Three.js 3D audience lattices, open-source Compromise NLP & Metricool time-series intelligence.
             </p>
           </div>
         </div>
@@ -334,7 +338,9 @@ export const App: React.FC = () => {
                       {t.badge !== undefined && (
                         <span
                           className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
-                            t.badge === 'Compromise'
+                            t.badge === 'Three.js 3D'
+                              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 animate-pulse'
+                              : t.badge === 'Compromise'
                               ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
                               : t.badge === 'Unique'
                               ? 'bg-gradient-to-r from-indigo-500 to-pink-500 text-white'
@@ -354,6 +360,13 @@ export const App: React.FC = () => {
             <div className="pt-1 animate-fadeIn">
               {activeTab === 'analytics' && (
                 <AnalyticsReportCard analytics={analysisResult.analytics} />
+              )}
+
+              {activeTab === '3d-topology' && (
+                <Dynamic3DHeroCard
+                  totalReach={analysisResult.analytics.totalReach}
+                  engagementScore={analysisResult.overallScore}
+                />
               )}
 
               {activeTab === 'platforms' && (
